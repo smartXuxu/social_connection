@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title>个人页面</title>
+    <link rel="stylesheet" href="../../css/base.css"/>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css"/>
+    <link rel="stylesheet" href="../../css/common/mui/mui_img.css"/>
+    <link rel="stylesheet" href="../../css/all.css" />
+    <link rel="stylesheet" href="../../css/iconfont.css" />
+    <link rel="stylesheet" href="../../css/mine_index.css"/>
+    <link rel="stylesheet" href="../../css/friends-circle.css"/>
+</head>
+<body>
+<div class="layer">
+    <div class="header">
+        <em class="iconfont icon-right" onclick="back()"></em>
+        <img src="../../img/focus-img1.png" alt=""/>
+    </div>
+
+    <div class="main_content">
+            <div class="top_message">
+               <p>
+                   <span>魏雨</span>
+                   <em>河南郑州</em>
+               </p>
+                <aside>
+                    <i>23</i>
+                    <i>诚信积分 20</i>
+                    <i>爱心积分 30</i>
+                </aside>
+
+            </div>
+        <div class="dynamic_group">
+            <p>亲友圈</p>
+            <div class="dynamic">
+                <div onclick="location.href=''" class="h_photo row">
+                    <div class="photo">
+                        <img src="../../img/22.png" alt="">
+                    </div>
+                    <div class="screen">
+                        <p>陌上浅笑</p>
+                        <p>3分钟前</p>
+                    </div>
+                </div>
+                <div onclick="location.href=''" class="content">
+                    <p>今天做的甜点，感觉味道还不错，欢迎大家来品尝！</p>
+                </div>
+                <div class="state">
+                    <div>
+                        <img src="../../img/44.png" data-preview-src="" data-preview-group="1" alt="">
+                    </div>
+                    <div>
+                        <img src="../../img/55.png" data-preview-src="" data-preview-group="1" alt="">
+                    </div>
+                    <div>
+                        <img src="../../img/66.png" data-preview-src="" data-preview-group="1" alt="">
+                    </div>
+                </div>
+                <div class="discuss">
+                    <div onclick="location.href=''" class="p_discuss">
+                        <i class="iconfont icon-evaluate"></i>
+                        <span>9</span>
+                    </div>
+                    <div class="z_discuss">
+                        <i class="iconfont icon-zan"></i>
+                        <span>99</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            <span class="iconfont">对话</span>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/mui/mui.zoom.js"></script>
+<script src="../../js/common/mui/mui.preview.js"></script>
+<script>
+    $(function () {
+        mui.previewImage();
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+    })
+</script>
+</html>

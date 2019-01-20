@@ -1,0 +1,115 @@
+body,html{
+    background-color:#f4f4f4;
+}
+.head-one{
+    position:relative;
+}
+.set{
+    background-color:#778afb;
+    height:2.8rem;
+    width:100%;
+    position:absolute;
+    top:0;
+    left:0;
+}
+.cephalosome{
+    background-color:#fff;
+    height:2.7rem;
+    position:absolute;
+    top:2.2rem;
+    width:92%;
+    left:4%;
+    border-radius:.12rem;
+    box-shadow:.01rem .01rem .02rem #dde2fd;
+}
+.photo{
+    width:1.36rem;
+    height:1.36rem;
+    background-color:#f1f1f1;
+    border-radius:50%;
+    position:absolute;
+    left: 50%;
+    top:-.6rem;
+    transform: translateX(-50%);
+    padding:.04rem;
+}
+.photo>img{
+    width:100%;
+    height:100%;
+}
+.name{
+    position:absolute;
+    left: 50%;
+    top:.92rem;
+    transform: translateX(-50%);
+}
+.name span:nth-of-type(1){
+    font-size:.32rem;
+    color:#778afb;
+}
+.name span:nth-of-type(2){
+    font-size:.32rem;
+    color:#778afb;
+    margin-left:.3rem;
+}
+.integral{
+    width:70%;
+    position:absolute;
+    left:15%;
+    top:1.46rem;
+}
+.c_integral{
+    text-align:center;
+}
+.c_integral p:nth-of-type(1){
+    font-size:.3rem;
+    color:#333;
+}
+.c_integral p:nth-of-type(2){
+    font-size:.3rem;
+    color:#666;
+}
+.a_integral{
+    text-align:center;
+    margin-left:50%;
+}
+.a_integral p:nth-of-type(1){
+    font-size:.3rem;
+    color:#333;
+}
+.a_integral p:nth-of-type(2){
+    font-size:.3rem;
+    color:#666;
+}
+.middle-two{
+    width:100%;
+    background-color:#f4f4f4;
+    padding:0 .3rem;
+    position:relative;
+    top:5.16rem;
+}
+.datum{
+    background-color:#fff;
+    padding:0 .3rem;
+    box-shadow:.01rem .01rem .02rem #dde2fd;
+    border-radius:.12rem;
+}
+.datum>ul>li{
+    height:.98rem;
+    border-bottom:0.01rem solid #eee;
+    line-height:.98rem;
+}
+.datum ul li i:nth-of-type(1){
+    font-size:.4rem;
+    color:#778afb;
+}
+.datum>ul>li>span{
+    font-size:.3rem;
+    color:#333;
+    margin-left:.3rem;
+}
+.datum ul li i:nth-of-type(2){
+    font-size:.32rem;
+    color:#666;
+    float: right;
+}

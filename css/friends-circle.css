@@ -1,0 +1,100 @@
+body,html{
+    background-color:#f4f4f4;
+}
+.icon-noticeplus{
+    font-size:.5rem;
+    color:#fff;
+    position: absolute;
+    right:.3rem;
+    top:.64rem;
+}
+.h_photo{
+    background-color:#fff;
+    padding:.26rem .3rem;
+}
+.photo{
+    width:.8rem;
+    height:.8rem;
+}
+.photo>img{
+    width:100%;
+    height:100%;
+}
+.screen{
+    padding-left:.16rem;
+}
+.screen p:nth-of-type(1){
+    font-size:.3rem;
+    color:#333;
+    margin-top:.06rem;
+}
+.screen p:nth-of-type(2){
+    font-size:.24rem;
+    color:#666;
+}
+.content{
+    padding:0 .3rem;
+    font-size:.3rem;
+    color:#333;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp:5;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
+}
+.state{
+    width:5.32rem;
+    margin-left:.3rem;
+    margin-top:.2rem;
+}
+.state>div{
+    width:1.7rem;
+    height:1.7rem;
+    display:inline-block;
+}
+.state>div>img{
+    width:100%;
+    height:100%;
+}
+.discuss{
+    height:.88rem;
+    padding:0 .3rem;
+
+}
+.p_discuss{
+    height:.88rem;
+    display: inline-block;
+    line-height:.88rem;
+    float:right;
+    color:#666;
+}
+.z_discuss{
+    height:.88rem;
+    display: inline-block;
+    line-height:.88rem;
+    float:right;
+    margin-right:.3rem;
+    color:#666;
+}
+.icon-evaluate{
+    font-size:.32rem;
+}
+.icon-zan{
+    font-size:.3rem;
+}
+.dynamic{
+   border-bottom:.01rem solid #eee;
+   background-color:#fff;
+}
+.delete{
+    height:.8rem;
+    text-align:center;
+    position:absolute;
+    right:.6rem;
+}
+.icon-shanchu{
+    font-size:.4rem;
+    color:#666;
+    position: absolute;
+    top:.2rem;
+}

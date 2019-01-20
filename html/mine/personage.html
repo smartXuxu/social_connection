@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>个人中心</title>
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/all.css" />
+    <link rel="stylesheet" href="../../css/iconfont.css" />
+    <link rel="stylesheet" href="../../css/personage.css" />
+    <link rel="stylesheet" href="../../css/footer.css" />
+</head>
+<body>
+    <div class="head-one">
+        <div class="set">
+            <h1 class="titles">个人中心</h1>
+        </div>
+        <div class="cephalosome">
+            <div class="photo">
+                <img src="../../img/22.png" alt="">
+            </div>
+            <div class="name">
+                <span>魏雨</span><span>ID:1226323</span>
+            </div>
+            <div class="integral row">
+                <div onclick="location.href='integrity-integral.html'" class="c_integral">
+                    <p>20</p>
+                    <p>诚信积分</p>
+                </div>
+                <div onclick="location.href='love-points.html'" class="a_integral">
+                    <p>50</p>
+                    <p>爱心积分</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="middle-two">
+        <div class="datum">
+           <ul>
+               <li onclick="location.href='./mine_data.html'">
+                   <i class="iconfont icon-geren2"></i>
+                   <span>个人资料</span>
+                   <i class="iconfont icon-icon1"></i>
+               </li>
+               <li onclick="location.href='./I-released.html'">
+                   <i class="iconfont icon-fabu2"></i>
+                   <span>我发布的</span>
+                   <i class="iconfont icon-icon1"></i>
+               </li>
+               <li onclick="location.href='./message-center.html'">
+                   <i class="iconfont icon-xiaoxi"></i>
+                   <span>消息中心</span>
+                   <i class="iconfont icon-icon1"></i>
+               </li>
+               <li onclick="location.href='./feedback.html'">
+                   <i class="iconfont icon-yijian"></i>
+                   <span>意见反馈</span>
+                   <i class="iconfont icon-icon1"></i>
+               </li>
+               <li onclick="location.href='./set.html'">
+                   <i class="iconfont icon-shezhi1"></i>
+                   <span>设置</span>
+                   <i class="iconfont icon-icon1"></i>
+               </li>
+           </ul>
+        </div>
+    </div>
+    <footer id="footer"></footer>
+</body>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/base.js"></script>
+<script>
+    $(function () {
+        $('#footer').load('../common/footer.html');
+        setTimeout(function () {
+            $("#footer li:nth-of-type(4)").addClass("active").siblings().removeClass("active");
+        },300)
+    })
+</script>
+</html>

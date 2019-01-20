@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>通讯录</title>
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/all.css" />
+    <link rel="stylesheet" href="../../css/iconfont.css" />
+    <link rel="stylesheet" href="../../css/address-list.css" />
+    <link rel="stylesheet" href="../../css/footer.css" />
+</head>
+<body>
+<div>
+    <div class="head">
+        <h1 class="titles">通讯录</h1>
+        <a href="addition.html"><span>添加</span></a>
+    </div>
+    <div class="middles">
+        <div class="integ">
+        <div class="heart flex">
+            <div onclick="location.href='integrity-ranking.html'" class="integrity">
+                <span>112</span>
+                <div>
+                    <span>诚信积分榜</span>
+                </div>
+            </div>
+            <div onclick="location.href='love-score-ranking.html'" class="hearts">
+                <span>112</span>
+                <div>
+                    <span>爱心积分榜</span>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="friend">
+            <p>亲友组</p>
+            <div onclick="location.href='./search-friends.html'" class="search">
+                <i class="iconfont icon-sousuo1"></i>
+                <span>搜索</span>
+            </div>
+        </div>
+        <div class="message">
+            <ul>
+                <li onclick="location.href='mine_index.html'">
+                    <div class="row">
+                        <div class="picture">
+                            <img src="../../img/11.png" alt="">
+                        </div>
+                        <div class="name">
+                            <span>李小沫</span>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="location.href='mine_index.html'">
+                    <div class="row">
+                        <div class="picture">
+                            <img src="../../img/22.png" alt="">
+                        </div>
+                        <div class="name">
+                            <span>李小沫</span>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="location.href='mine_index.html'">
+                    <div class="row">
+                        <div class="picture">
+                            <img src="../../img/33.png" alt="">
+                        </div>
+                        <div class="name">
+                            <span>李小沫</span>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="location.href='mine_index.html'">
+                    <div class="row">
+                        <div class="picture">
+                            <img src="../../img/11.png" alt="">
+                        </div>
+                        <div class="name">
+                            <span>李小沫</span>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="location.href='mine_index.html'">
+                    <div class="row">
+                        <div class="picture">
+                            <img src="../../img/22.png" alt="">
+                        </div>
+                        <div class="name">
+                            <span>李小沫</span>
+                        </div>
+                    </div>
+                </li>
+                <li onclick="location.href='mine_index.html'">
+                    <div class="row">
+                        <div class="picture">
+                            <img src="../../img/33.png" alt="">
+                        </div>
+                        <div class="name">
+                            <span>李小沫</span>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <footer id="footer"></footer>
+</div>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/jquery.min.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script>
+    $(function () {
+        $('#footer').load('../common/footer.html');
+        setTimeout(function () {
+            $("#footer li:nth-of-type(2)").addClass("active").siblings().removeClass("active");
+        },300);
+        (function($, doc) {
+            $.init();
+            $.plusReady(function() {
+                var backButtonPress = 0;
+                $.back = function(event) {
+                    backButtonPress++;
+                    if (backButtonPress > 1) {
+                        plus.runtime.quit();
+                    } else {
+                        plus.nativeUI.toast('再按一次退出应用');
+                    }
+                    setTimeout(function() {
+                        backButtonPress = 0;
+                    }, 1000);
+                    return false;
+                };
+            });
+        }(mui, document));
+    })
+</script>
+</body>
+</html>

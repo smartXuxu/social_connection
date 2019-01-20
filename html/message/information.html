@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>消息</title>
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/all.css" />
+    <link rel="stylesheet" href="../../css/iconfont.css" />
+    <link rel="stylesheet" href="../../css/message/information.css" />
+    <link rel="stylesheet" href="../../css/footer.css" />
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css" />
+</head>
+<body>
+<div class="layer">
+    <div class="head">
+        <h1 class="titles">消息</h1>
+        <a href="../address_list/search-friends.html"><i class="iconfont icon-sousuo1"></i></a>
+    </div>
+    <div class="middles">
+        <div  onclick="location.href=''" class="news">
+         <div class="row">
+             <div class="portrait">
+                 <img src="../../img/11.png" alt="">
+             </div>
+             <div class="screen">
+                <p>铭铭</p>
+                 <p>帮我点个赞，谢谢啊！</p>
+             </div>
+             <div class="time">
+                 <p>15:31</p>
+                 <span>99+</span>
+             </div>
+         </div>
+        </div>
+        <div  onclick="location.href=''" class="news">
+            <div class="row">
+                <div class="portrait">
+                    <img src="../../img/22.png" alt="">
+                </div>
+                <div class="screen">
+                    <p>丽丽</p>
+                    <p>那应该都到周五了！</p>
+                </div>
+                <div class="time">
+                    <p>15:31</p>
+                    <span>99+</span>
+                </div>
+            </div>
+        </div>
+        <div  onclick="location.href=''" class="news">
+            <div class="row">
+                <div class="portrait">
+                    <img src="../../img/33.png" alt="">
+                </div>
+                <div class="screen">
+                    <p>尚文</p>
+                    <p>好久不见甚是想念啊</p>
+                </div>
+                <div class="time">
+                    <p>15:31</p>
+                    <span>99+</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <footer id="footer"></footer>
+</div>
+</body>
+<script src="../../js/x_rem.js"></script>
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script>
+    $(function () {
+        $('#footer').load('../common/footer.html');
+        (function($, doc) {
+            $.init();
+            $.plusReady(function() {
+                var backButtonPress = 0;
+                $.back = function(event) {
+                    backButtonPress++;
+                    if (backButtonPress > 1) {
+                        plus.runtime.quit();
+                    } else {
+                        plus.nativeUI.toast('再按一次退出应用');
+                    }
+                    setTimeout(function() {
+                        backButtonPress = 0;
+                    }, 1000);
+                    return false;
+                };
+            });
+        }(mui, document));
+
+    })
+</script>
+</html>

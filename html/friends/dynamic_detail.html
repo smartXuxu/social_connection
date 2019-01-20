@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title>动态详情</title>
+    <link rel="stylesheet" href="../../css/base.css"/>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css" />
+    <link rel="stylesheet" href="../../css/common/mui/mui_img.css" />
+    <link rel="stylesheet" href="../../css/all.css" />
+    <link rel="stylesheet" href="../../css/iconfont.css" />
+    <link rel="stylesheet" href="../../css/dynamic_detail.css"/>
+</head>
+<body>
+<div class="layer">
+    <div class="head">
+        <span onclick="back()">
+        <i class="iconfont icon-right"></i></span>
+        <h1 class="titles">动态详情</h1>
+    </div>
+    <div class="main">
+        <div class="dynamic">
+            <div class="dy_top">
+                <img src="../../img/focus-img1.png" alt=""/>
+                <div class="dy_middle_top">
+                    <span>大田</span>
+                    <em>3分钟前</em>
+                </div>
+            </div>
+            <div class="dy_connect">
+                <p>今天做的甜点，感觉味道还不错，欢迎大家来品尝今天做的甜点，感觉味道还不错，欢迎大家来品尝今天做的甜点，感觉味道还不错，欢迎大家来品尝！</p>
+                <div class="state">
+                    <div>
+                        <img src="../../img/44.png" data-preview-src="" data-preview-group="1"alt="">
+                    </div>
+                    <div>
+                        <img src="../../img/55.png" data-preview-src="" data-preview-group="1" alt="">
+                    </div>
+                    <div>
+                        <img src="../../img/66.png" data-preview-src="" data-preview-group="1" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="discuss">
+                <div class="p_discuss">
+                    <i class="iconfont icon-evaluate"></i>
+                    <span>9</span>
+                </div>
+                <div class="z_discuss">
+                    <i class="iconfont icon-zan"></i>
+                    <span>99</span>
+                </div>
+            </div>
+        </div>
+        <div class="dy_comment">
+            <p><span>评论(123)</span></p>
+            <div class="comment_father">
+                <div class="comment_father_top">
+                    <img src="../../img/focus-img1.png" alt=""/>
+                    <div class="comment_father_center">
+                        <span>陌上花开</span>
+                        <em>今天11.23</em>
+                    </div>
+                </div>
+                <div class="comment_text">
+                    看着很不错哦！
+                </div>
+                <div class="comment_sons">
+                    <div class="comment_son">
+                        <em>大田</em>回复 <em>陌上花开</em>：欢迎来品尝呀！
+                    </div>
+                    <div class="comment_son">
+                        <em>陌上花开</em>回复 <em>大田</em>：好呀！我最喜欢吃甜食了， 正好可以向你请教一下怎么做正好可以向你请教一下怎么做
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="footer">
+    <input type="text" placeholder="写下评论吧..."/><em>发送</em>
+    </div>
+</div>
+</body>
+<script src="../../js/x_rem.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/mui/mui.zoom.js"></script>
+<script src="../../js/common/mui/mui.preview.js"></script>
+<script>
+    $(function () {
+        mui.previewImage();
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+    })
+</script>
+</html>

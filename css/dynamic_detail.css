@@ -1,0 +1,169 @@
+.layer .main{
+  width:100%;
+  padding:1.28rem 0 .8rem 0;
+  background-color:#fff;
+}
+.layer .main > .dynamic {
+  padding:0.3rem 0.3rem 0 0.3rem;
+  border-bottom: 0.2rem solid #eee;
+}
+.layer .main > .dynamic > .dy_top {
+  position: relative;
+}
+.layer .main > .dynamic > .dy_top > img {
+  width: 0.8rem;
+  height: 0.8rem;
+  vertical-align: middle;
+  border-radius: 50%;
+}
+.layer .main > .dynamic > .dy_top > .dy_middle_top {
+  position: absolute;
+  left: 1rem;
+  top: 2%;
+}
+.layer .main > .dynamic > .dy_top > .dy_middle_top > span {
+  font-size: 0.32rem;
+  display: block;
+}
+.layer .main > .dynamic > .dy_top > .dy_middle_top > em {
+  color: #999;
+  font-size: 0.24rem;
+}
+.layer .main > .dynamic > .dy_connect {
+  margin-top: 0.2rem;
+}
+.layer .main > .dynamic > .dy_connect > p {
+  line-height: 0.4rem;
+  margin-bottom: 0.2rem;
+  font-size: 0.28rem;
+  color: #666;
+  text-indent: 2em;
+}
+.layer .main > .dynamic > .dy_connect > .imgs_box > .img_box {
+  display: inline-block;
+  width: 30%;
+  margin-right: 1%;
+  margin-bottom: 0.2rem;
+}
+.layer .main > .dynamic > .dy_connect > .imgs_box > .img_box > img {
+  width: 100%;
+}
+.state{
+  width:5.32rem;
+  margin-top:.2rem;
+}
+.state>div{
+  width:1.7rem;
+  height:1.7rem;
+  display:inline-block;
+}
+.state>div>img{
+  width:100%;
+  height:100%;
+}
+.discuss{
+  height:.88rem;
+  padding:0 .3rem;
+
+}
+.p_discuss{
+  height:.88rem;
+  display: inline-block;
+  line-height:.88rem;
+  float:right;
+  color:#666;
+}
+.z_discuss{
+  height:.88rem;
+  display: inline-block;
+  line-height:.88rem;
+  float:right;
+  margin-right:.3rem;
+  color:#666;
+}
+.icon-evaluate{
+  font-size:.32rem;
+}
+.icon-zan{
+  font-size:.3rem;
+}
+.layer .main > .dy_comment {
+  padding: 0 0.3rem;
+}
+.layer .main > .dy_comment > p {
+  font-size: 0.3rem;
+  height: 0.6rem;
+  line-height: 0.6rem;
+  border-bottom: 1px solid #eeeeee;
+}
+.layer .main > .dy_comment > p > span {
+  border-bottom: 2px solid #778afb;
+}
+.layer .main > .dy_comment > .comment_father {
+  margin-top: 0.2rem;
+}
+.layer .main > .dy_comment > .comment_father > .comment_father_top {
+  position: relative;
+}
+.layer .main > .dy_comment > .comment_father > .comment_father_top > img {
+  width: 0.6rem;
+  height: 0.6rem;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
+.layer .main > .dy_comment > .comment_father > .comment_father_top > .comment_father_center {
+  position: absolute;
+  left: 0.8rem;
+  top: 2%;
+}
+.layer .main > .dy_comment > .comment_father > .comment_father_top > .comment_father_center > span {
+  display: block;
+  font-size: 0.28rem;
+}
+.layer .main > .dy_comment > .comment_father > .comment_father_top > .comment_father_center > em {
+  font-size: 0.24rem;
+  color: #999;
+}
+.layer .main > .dy_comment > .comment_father > .comment_text {
+  margin-left: 0.6rem;
+  font-size: 0.3rem;
+  color: #323333;
+  margin-top: 0.1rem;
+  margin-bottom: 0.1rem;
+}
+.layer .main > .dy_comment > .comment_father > .comment_sons {
+  margin-left: 0.6rem;
+  background-color: #eeeeee;
+  padding: 0.2rem;
+}
+.layer .main > .dy_comment > .comment_father > .comment_sons > .comment_son {
+  font-size: 0.24rem;
+}
+.layer .main > .dy_comment > .comment_father > .comment_sons > .comment_son > em {
+  color: #5553bd;
+}
+.layer > .footer {
+  position: fixed;
+  height: 0.8rem;
+  line-height: 0.8rem;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+  background-color: #eeeeee;
+}
+.layer > .footer > input {
+  margin-left: 0.3rem;
+  width: 80%;
+  height: 0.7rem;
+  line-height: 0.7rem;
+  text-indent: 1em;
+}
+.layer > .footer > em{
+  font-size: 0.3rem;
+  position: absolute;
+  right: 0%;
+  top: 0%;
+  width: 14%;
+  margin-left: 2%;
+}

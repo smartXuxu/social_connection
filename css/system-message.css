@@ -1,0 +1,29 @@
+body,html{
+    background-color:#f4f4f4;
+}
+.detail{
+    margin:0 auto;
+    width:80%;
+    margin-top:.5rem;
+}
+.detail>p{
+    text-align:center;
+    font-size:.24rem;
+    color:#666;
+}
+.a_brief{
+    background-color:#fff;
+    margin-top:.38rem;
+    border-radius:.12rem;
+    padding:0 .2rem .2rem .2rem;
+}
+.brief{
+    height:.88rem;
+    line-height:.88rem;
+    font-size:.3rem;
+    color:#333;
+}
+.icon-cuohao{
+    font-size:.36rem;
+    float:right;
+}

@@ -1,0 +1,115 @@
+html {
+  background-color: #eee;
+}
+.heads{
+  position: fixed;
+  z-index: 3;
+  height: 1.28rem;
+  width: 100%;
+}
+.layer header {
+  position: relative;
+  height: 5rem;
+  overflow: hidden;
+}
+.layer header > .header_top {
+  position: absolute;
+  z-index: 3;
+  left: 5%;
+  width: 100%;
+  height: 1rem;
+  line-height: 1rem;
+}
+.layer header > .header_top > i {
+  color: #ffffff;
+}
+.layer header > .header_top > h3 {
+  width: 100%;
+  color: #ffffff;
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  height: 1rem;
+  top: 50%;
+  font-size: 0.3rem;
+  transform: translate(-50%, -50%);
+}
+.layer header > img {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 5rem;
+}
+.layer header > .top_right {
+  position: absolute;
+  right: 5%;
+  bottom: 5%;
+  font-size: 0.24rem;
+  color: #fff;
+  z-index: 3;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 0.2rem;
+  text-align: center;
+}
+.layer header > .top_right > span {
+  display: block;
+}
+.layer > .main_content > button {
+  display: block;
+  text-align: center;
+  width: 60%;
+  background-color: #778afb;
+  font-size: 0.3rem;
+  color: #ffffff;
+  height: 0.9rem;
+  line-height: 0.9rem;
+  margin: 1rem auto 0 auto;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+}
+.layer > .main_content > div {
+  background-color: #fff;
+  height: 1rem;
+  line-height: 1rem;
+  padding: 0 0.3rem;
+  border-bottom: 1px solid #eeeeee;
+  font-size: 0.3rem;
+}
+.layer > .main_content > div.header_pic {
+  height: 1.2rem;
+  line-height: 1.2rem;
+}
+.layer > .main_content > div.header_pic > img {
+  height: 0.8rem;
+  width: 0.8rem;
+  margin-top: 0.2rem;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 5%;
+}
+.layer > .main_content > div.header_pic > em {
+  font-size: 0.22rem;
+  background-color: #dcdcdc;
+  color: #ffffff;
+  margin-top: 0.4rem;
+  height: 0.4rem;
+  padding: 0.05rem 0.1rem;
+  line-height: 0.4rem;
+}
+.layer > .main_content > div.header_pic > s {
+  color: #999999;
+  float:right;
+}
+.layer > .main_content > div > span {
+  width: 30%;
+}
+.icon-nv1{
+  color:#ff4d94;
+  font-size:.4rem;
+}

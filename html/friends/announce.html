@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>亲友圈</title>
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/iconfont.css" />
+    <link rel="stylesheet" href="../../css/all.css" />
+    <link rel="stylesheet" href="../../css/announce.css" />
+    <link rel="stylesheet" href="../../js/common/webuplader/webuploader.css" />
+    <link rel="stylesheet" href="../../css/common/webuploader/uploader.css" />
+</head>
+<body>
+<div>
+    <div class="head">
+        <span onclick="back()">
+        <i class="iconfont icon-right"></i></span>
+        <h1 class="titles">亲友圈</h1>
+        <span class="achieve">发布</span>
+    </div>
+    <div class="middle-three">
+        <div class="p_picture">
+        <div>
+            <textarea class="describe" placeholder="想说点啥，就说吧"></textarea>
+        </div>
+        <!--<div class="picture">
+            <img src="../../img/tianjia.png" alt="">
+        </div>-->
+            <div id="uploader-demo" >
+                <!--用来存放item-->
+                <div id="fileList" class="uploader-list"></div>
+                <div id="filePicker"></div>
+            </div>
+    </div>
+    </div>
+</div>
+<script src="../../js/x_rem.js"></script>
+<script src="../../js/common/jquery.min.js"></script>
+<script src="../../js/common/webuplader/webuploader.js"></script>
+<script>
+    $(function () {
+        // 封装成一个函数 调用的写法
+
+        function uploader(ele,name){
+            // 初始化Web Uploader
+            name = WebUploader.create({
+                // 选完文件后，是否自动上传。
+                auto: true,
+                // swf文件路径
+                swf: './js/webuplader/Uploader.swf',
+                // 文件接收服务端。
+                server: 'http://webuploader.duapp.com/server/fileupload.php',
+                // 选择文件的按钮。可选。
+                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+                pick: ele,
+
+                // 只允许选择图片文件。
+                accept: {
+                    title: 'Images',
+                    extensions: 'gif,jpg,jpeg,bmp,png',
+                    mimeTypes: 'image/*'
+                }
+            });
+            // 当有文件添加进来的时候
+            name.on( 'fileQueued', function( file ) {
+                var $li = $(
+                                '<div id="' + file.id + '" class="file-item thumbnail">' +
+                                '<img>' +
+                                '</div>'
+                        ),
+                        $img = $li.find('img');
+                var $list=ele;
+                // $list为容器jQuery实例
+                $list.append( $li );
+
+                // 创建缩略图
+                // 如果为非图片文件，可以不用调用此方法。
+                // thumbnailWidth x thumbnailHeight 为 100 x 100
+                name.makeThumb( file, function( error, src ) {
+                    if ( error ) {
+                        $img.replaceWith('<span>不能预览</span>');
+                        return;
+                    }
+
+                    $img.attr( 'src', src );
+                }, 75,75 );
+            });
+            // 文件上传过程中创建进度条实时显示。
+            name.on( 'uploadProgress', function( file, percentage ) {
+                var $li = $( '#'+file.id ),
+                        $percent = $li.find('.progress span');
+
+                // 避免重复创建
+                if ( !$percent.length ) {
+                    $percent = $('<p class="progress"><span></span></p>')
+                            .appendTo( $li )
+                            .find('span');
+                }
+
+                $percent.css( 'width', percentage * 100 + '%' );
+            });
+
+        // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+            name.on( 'uploadSuccess', function( file,msg ) {
+                $( '#'+file.id ).addClass('upload-state-done');
+                console.log(msg);
+            });
+
+            // 文件上传失败，显示上传出错。
+            name.on( 'uploadError', function( file,msg ) {
+                var $li = $( '#'+file.id ),
+                        $error = $li.find('div.error');
+                console.log(msg);
+
+                // 避免重复创建
+                if ( !$error.length ) {
+                    $error = $('<div class="error"></div>').appendTo( $li );
+                }
+
+                $error.text('上传失败');
+            });
+
+// 完成上传完了，成功或者失败，先删除进度条。
+            name.on( 'uploadComplete', function( file,res ) {
+                $( '#'+file.id ).find('.progress').remove();
+                console.log(res);
+
+            });
+        }
+        uploader($("#filePicker"),uploader);
+    })
+</script>
+</body>
+</html>

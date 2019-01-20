@@ -1,0 +1,142 @@
+body,html{
+    background-color:#f4f4f4;
+}
+.heads{
+    position: fixed;
+    z-index: 3;
+    height: 1.48rem;
+    width: 100%;
+    border-bottom:.2rem solid #eee;
+    background-color:#fff;
+}
+.arrow{
+    font-size:.4rem;
+    color:#7b8df9;
+}
+.title{
+    font-size:.36rem;
+    text-align: center;
+    color:#7b8df9;
+    position: absolute;
+    left:12%;
+    display: inline-block ;
+    top:.62rem;
+}
+.middle-two{
+    width:100%;
+    padding-top:1.48rem;
+    background-color:#fff;
+}
+div.header_pic {
+    height: 1.2rem;
+    line-height: 1.2rem;
+    padding:0 .3rem;
+}
+ div.header_pic > img {
+    height: 0.8rem;
+    width: 0.8rem;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-right: 5%;
+}
+ div.header_pic > em {
+    font-size: 0.22rem;
+    background-color: #dcdcdc;
+    color: #ffffff;
+    margin-top: 0.4rem;
+    height: 0.4rem;
+    padding: 0.05rem 0.1rem;
+    line-height: 0.4rem;
+}
+ div.header_pic > s {
+     font-size:.3rem;
+    color: #999999;
+    float:right;
+}
+.name{
+     height:.98rem;
+     line-height:.98rem;
+     padding:0 .3rem;
+     border-top:.01rem solid #eee;
+}
+.name>span{
+    font-size:.3rem;
+    color:#333;
+    width: 1.6rem;
+}
+.name>input{
+    height:.8rem;
+    width:74%;
+    float:right;
+    margin-top:.09rem;
+    font-size:.3rem;
+    color:#333;
+    text-align: left;
+}
+.men{
+    display:inline-block;
+    margin-right:.5rem;
+    width: 1.5rem;
+}
+.men>span{
+    font-size:.28rem;
+    color:#999;
+}
+.icon-nan1{
+    font-size:.4rem;
+    color:#999;
+    vertical-align: middle;
+}
+.women{
+    display:inline-block;
+    width: 1.5rem;
+}
+.women>span{
+    font-size:.28rem;
+    color:#999;
+}
+.icon-nv1{
+    font-size:.4rem;
+    color:#999;
+    vertical-align: middle;
+}
+.a_elect{
+    display:inline-block;
+    width:43%;
+    font-size:.3rem;
+    color:#999;
+    margin-left: .6rem;
+}
+.right{
+    font-size:.32rem;
+    color:#333;
+    float:right;
+}
+.elect{
+    display:inline-block;
+    width:43%;
+    font-size:.3rem;
+    color:#999;
+    margin-left: .3rem;
+}
+.footer>button{
+    width:80%;
+    height:.88rem;
+    border-radius:.44rem;
+    background-color:#7b8df9;
+    font-size:.34rem;
+    color:#fff;
+    margin-left:10%;
+    margin-top:.4rem;
+}
+.birthday>input{
+    width: 70%;
+}
+.gender>.women.active>i{
+    color:#E85F96;
+}
+.gender>.men.active>i{
+    color:#a3a6fd;
+}

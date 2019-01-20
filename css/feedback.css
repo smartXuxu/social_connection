@@ -1,0 +1,65 @@
+html,body{
+    background-color: #f4f4f4;
+}
+.message{
+    font-size:.28rem;
+    color:#666;
+    padding-left:.3rem;
+}
+.messages{
+    width:100%;
+    height:.88rem;
+    background-color:#eee;
+    line-height:.88rem;
+}
+.name{
+    width:100%;
+    height:.98rem;
+    border-bottom:.01rem solid #ddd;
+    line-height: .98rem;
+}
+.name-one{
+    font-size: .32rem;
+    color:#333;
+}
+.names{
+    display: inline-block ;
+    width:.36rem;
+    vertical-align: middle;
+    margin:-0.14rem .2rem 0 .3rem;
+    height:.36rem;
+    border-radius:50%;
+    border:.02rem solid #333;
+}
+.describe{
+    width:95%;
+    padding-left:.3rem;
+    height:2.5rem;
+    color:#999;
+    font-size:.3rem;
+    border:none;
+    resize:none;
+}
+.jiahao{
+    padding:.3rem 0 .3rem .3rem;
+    width:1.64rem;
+    height:1.64rem;
+}
+.jiahaos{
+    width:100%;
+    height:100%;
+}
+.refers{
+    float:right;
+    margin-top:.2rem;
+    margin-right:.2rem;
+}
+.refer{
+    width:2rem;
+    height:.68rem;
+    background-color:#7b8df9;
+    font-size:.28rem;
+    color:#fff;
+    border-radius:.03rem;
+    text-align:center;
+}

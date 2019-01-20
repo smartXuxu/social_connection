@@ -1,0 +1,25 @@
+body,html{
+    background-color:#f4f4f4;
+}
+.logos{
+    width:100%;
+    height: 100%;
+}
+.logo{
+    width:2rem;
+    height:.88rem;
+    margin:0 auto;
+    margin-top:1rem;
+}
+.article{
+    width: 6.52rem;
+    height: 1.68rem;
+    margin:0 auto;
+    margin-top:.6rem;
+    font-size:.3rem;
+    color:#333;
+}
+.middle>p{
+    text-align:center;
+    margin-top:.3rem;
+}

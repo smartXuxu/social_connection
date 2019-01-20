@@ -1,0 +1,39 @@
+/*图片上传的样式重置*/
+#uploader-demo,#uploader-demo1,#uploader-demo2{
+    padding:0 .3rem;
+    margin-top: .2rem;
+}
+.webuploader-pick{
+    height:75px;
+    width: 75px;
+    display: inline-block;
+    background: url("../../../img/tianjia.png") no-repeat center;
+    -webkit-background-size: 100%;
+    background-size: 100%;
+    margin-right: .3rem;
+}
+.file-item.thumbnail{
+    display: inline-block;
+    position: relative;
+    margin-right: .3rem;
+    margin-bottom: .3rem;
+}
+.file-item.thumbnail>img{
+    background-color: #333;
+}
+.file-item.thumbnail>.error,.file-item.thumbnail>.upload-state-done{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    font-size: .26rem;
+    color:#f01414;
+    background-color: rgba(0,0,0,0.3);
+    text-align: center;
+}
+.webuploader-container{
+    display: inline-block;
+}
+/*上传多张图片结束*/

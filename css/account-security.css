@@ -1,0 +1,22 @@
+body,html{
+    background-color:#f4f4f4;
+}
+.photo{
+    height:1.18rem;
+    line-height:.98rem;
+    padding:0 .3rem;
+    border-bottom:.01rem solid #eee;
+    border-top:.2rem solid #eee;
+    font-size:.3rem;
+    color:#333;
+}
+.photo span:nth-of-type(2){
+    float:right;
+}
+.a_photo{
+    height:.98rem;
+    line-height:.98rem;
+    padding:0 .3rem;
+    font-size:.3rem;
+    color:#333;
+}

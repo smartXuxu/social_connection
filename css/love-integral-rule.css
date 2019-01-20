@@ -1,0 +1,17 @@
+body,html{
+    background-color:#f4f4f4;
+}
+.middle-two{
+    width:100%;
+    background-color:#fff;
+    padding:1.68rem .3rem .3rem .3rem;
+}
+.middle-two p:nth-of-type(1){
+    font-size:.32rem;
+    color:#333;
+}
+.middle-two p:nth-of-type(2){
+    font-size:.28rem;
+    color:#333;
+    margin-top:.2rem;
+}
