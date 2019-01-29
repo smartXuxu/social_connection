@@ -10,8 +10,13 @@
     <link rel="stylesheet" href="../../css/iconfont.css" />
     <link rel="stylesheet" href="../../css/address-list.css" />
     <link rel="stylesheet" href="../../css/footer.css" />
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css" />
 </head>
 <body>
+<div id="loading">
+    <img src="../../img/login.gif" alt=""/>
+    <div>请等待，正在加载...</div>
+</div>
 <div>
     <div class="head">
         <h1 class="titles">通讯录</h1>
@@ -21,13 +26,13 @@
         <div class="integ">
         <div class="heart flex">
             <div onclick="location.href='integrity-ranking.html'" class="integrity">
-                <span>112</span>
+                <span class="sincerity">999</span>
                 <div>
                     <span>诚信积分榜</span>
                 </div>
             </div>
             <div onclick="location.href='love-score-ranking.html'" class="hearts">
-                <span>112</span>
+                <span class="love">999</span>
                 <div>
                     <span>爱心积分榜</span>
                 </div>
@@ -43,17 +48,8 @@
         </div>
         <div class="message">
             <ul>
-                <li onclick="location.href='mine_index.html'">
-                    <div class="row">
-                        <div class="picture">
-                            <img src="../../img/11.png" alt="">
-                        </div>
-                        <div class="name">
-                            <span>李小沫</span>
-                        </div>
-                    </div>
-                </li>
-                <li onclick="location.href='mine_index.html'">
+
+               <!-- <li onclick="location.href='mine_index.html'">
                     <div class="row">
                         <div class="picture">
                             <img src="../../img/22.png" alt="">
@@ -102,22 +98,57 @@
                             <span>李小沫</span>
                         </div>
                     </div>
-                </li>
+                </li>-->
             </ul>
         </div>
     </div>
     <footer id="footer"></footer>
 </div>
 <script src="../../js/common/x_rem.js"></script>
-<script src="../../js/common/jquery.min.js"></script>
-<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/base.js"></script>
 <script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/zepto/outHeight.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
+
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template-web.js"></script>
+<script type="text/html" id="list">
+    {{if message.uinfos.length==0}}
+    <div class="no_in">对不起，您暂时没有任何好友，快去添加吧</div>
+    {{else}}
+    {{each message.uinfos as value i}}
+    <li onclick="location.href='mine_index.html?accid={{value.accid}}'">
+        <div class="row">
+            <div class="picture">
+                <img src="{{value.icon}}" onerror="this.src='../../img/main_logo.png'" alt="">
+            </div>
+            <div class="name">
+                <span>{{value.name}}</span>
+            </div>
+        </div>
+    </li>
+    {{/each}}
+    {{/if}}
+</script>
+<script type="text/html" id="ranking">
+    <div onclick="location.href='integrity-ranking.html?sincerity={{message.sincerity}}&love={{message.love}}'" class="integrity">
+        <span class="sincerity">{{message.sincerity}}</span>
+        <div>
+            <span>诚信积分榜</span>
+        </div>
+    </div>
+    <div onclick="location.href='love-score-ranking.html?love={{message.love}}&sincerity={{message.sincerity}}'" class="hearts">
+        <span class="love">{{message.love}}</span>
+        <div>
+            <span>爱心积分榜</span>
+        </div>
+    </div>
+</script>
+
 <script>
+
     $(function () {
-        $('#footer').load('../common/footer.html');
-        setTimeout(function () {
-            $("#footer li:nth-of-type(2)").addClass("active").siblings().removeClass("active");
-        },300);
+        /*双击退出APP*/
         (function($, doc) {
             $.init();
             $.plusReady(function() {
@@ -136,6 +167,48 @@
                 };
             });
         }(mui, document));
+        $('#footer').load('../common/footer.html');
+        setTimeout(function () {
+            $("#footer li:nth-of-type(2)").addClass("active").siblings().removeClass("active");
+            $("#footer li:nth-of-type(2) a i:nth-of-type(1)").addClass("icon-tianchongxing-").removeClass("icon-haoyou");
+        },300);
+        mui.init();
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+
+        //ajax 发送完毕
+        $(document).on('ajaxStop', function () {
+            $("#loading").hide();
+        })
+        //查询好友列表
+        list();
+        function list(){
+            myAjax({url:"/im/friendsList",type:"post"}, function (data) {
+
+                var data=JSON.parse(data);
+                console.log(data);
+                if(data.message=="好友列表为空！"){
+                    $('.message').html(`<div class='no_in'>对不起，您暂时没有任何好友，快去添加吧</div>`)
+                }else if(data.code==0){
+                    $('.message>ul').html(template("list",data));
+                }else{
+                    sweetAlert(
+                            "sorry",
+                            data.message,
+                            "error"
+                    )
+                }
+            })
+        }
+        //获取积分
+        myAjax({url:"/user/getUser",type:"post"}, function (data) {
+          var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==0){
+                $(".heart").html(template("ranking",data));
+               /* $(".love").text(data.message.love);
+                $(".sincerity").text(data.message.sincerity);*/
+            }
+        })
     })
 </script>
 </body>

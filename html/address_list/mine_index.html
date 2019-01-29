@@ -13,17 +13,26 @@
     <link rel="stylesheet" href="../../css/iconfont.css" />
     <link rel="stylesheet" href="../../css/mine_index.css"/>
     <link rel="stylesheet" href="../../css/friends-circle.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
 </head>
 <body>
-<div class="layer">
+<div class="layer" style="overflow-y: auto">
     <div class="header">
         <em class="iconfont icon-right" onclick="back()"></em>
-        <img src="../../img/focus-img1.png" alt=""/>
+        <img src="../../img/mine_date.png" alt=""/>
+        <i class="iconfont icon-more icon_dete"></i>
     </div>
-
     <div class="main_content">
+        <div id="mask"></div>
+        <div id="share">
+            <p>删除该好友</p>
+            <div class="apply">
+                <span class="sure_delete">确定</span>
+                <span class="quit_delete">取消</span>
+            </div>
+        </div>
             <div class="top_message">
-               <p>
+            <!--   <p>
                    <span>魏雨</span>
                    <em>河南郑州</em>
                </p>
@@ -31,62 +40,228 @@
                     <i>23</i>
                     <i>诚信积分 20</i>
                     <i>爱心积分 30</i>
-                </aside>
+                </aside>-->
 
             </div>
         <div class="dynamic_group">
-            <p>亲友圈</p>
-            <div class="dynamic">
-                <div onclick="location.href=''" class="h_photo row">
-                    <div class="photo">
-                        <img src="../../img/22.png" alt="">
-                    </div>
-                    <div class="screen">
-                        <p>陌上浅笑</p>
-                        <p>3分钟前</p>
-                    </div>
-                </div>
-                <div onclick="location.href=''" class="content">
-                    <p>今天做的甜点，感觉味道还不错，欢迎大家来品尝！</p>
-                </div>
-                <div class="state">
-                    <div>
-                        <img src="../../img/44.png" data-preview-src="" data-preview-group="1" alt="">
-                    </div>
-                    <div>
-                        <img src="../../img/55.png" data-preview-src="" data-preview-group="1" alt="">
-                    </div>
-                    <div>
-                        <img src="../../img/66.png" data-preview-src="" data-preview-group="1" alt="">
-                    </div>
-                </div>
-                <div class="discuss">
-                    <div onclick="location.href=''" class="p_discuss">
-                        <i class="iconfont icon-evaluate"></i>
-                        <span>9</span>
-                    </div>
-                    <div class="z_discuss">
-                        <i class="iconfont icon-zan"></i>
-                        <span>99</span>
-                    </div>
-                </div>
-            </div>
+           <p>亲友圈</p>
+          <div class="dynamics">
+              <!-- <div class="dynamic">
+               <div onclick="location.href=''" class="h_photo row">
+                   <div class="photo">
+                       <img src="../../img/22.png" alt="">
+                   </div>
+                   <div class="screen">
+                       <p>陌上浅笑</p>
+                       <p>3分钟前</p>
+                   </div>
+               </div>
+               <div onclick="location.href=''" class="content">
+                   <p>今天做的甜点，感觉味道还不错，欢迎大家来品尝！</p>
+               </div>
+               <div class="state">
+                   <div>
+                       <img src="../../img/44.png" data-preview-src="" data-preview-group="1" alt="">
+                   </div>
+                   <div>
+                       <img src="../../img/55.png" data-preview-src="" data-preview-group="1" alt="">
+                   </div>
+                   <div>
+                       <img src="../../img/66.png" data-preview-src="" data-preview-group="1" alt="">
+                   </div>
+               </div>
+               <div class="discuss">
+                   <div onclick="location.href=''" class="p_discuss">
+                       <i class="iconfont icon-evaluate"></i>
+                       <span>9</span>
+                   </div>
+                   <div class="z_discuss">
+                       <i class="iconfont icon-zan"></i>
+                       <span>99</span>
+                   </div>
+               </div>
+           </div>-->
+          </div>
+
         </div>
         <div class="footer">
-            <span class="iconfont">对话</span>
+            <span><i  class="iconfont icon-xiaoxi4"></i>对话</span>
         </div>
     </div>
 </div>
 </body>
 <script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/base.js"></script>
 <script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/zepto/outHeight.js"></script>
 <script src="../../js/common/mui/mui.min.js"></script>
 <script src="../../js/common/mui/mui.zoom.js"></script>
 <script src="../../js/common/mui/mui.preview.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script type="text/html" id="dynamic">
+    {{if message.length==0||message.dynamic.length==0||message.dynamic==null||message.dynamic==''}}
+    <div class="no_in">对不起，该好友暂时没有发表动态</div>
+    {{else}}
+    {{each message.dynamic as value i }}
+    <div class="dynamic" onclick="location.href='../friends/dynamic_detail.html?dynamicId={{value.dynamic.dynamicId}}'">
+        <div  class="h_photo row">
+            <div class="photo">
+                <img src="{{value.dynamic.userAvatar}}" onerror="this.src='../../img/main_logo.png'" alt="">
+            </div>
+            <div class="screen">
+                <p>{{value.dynamic.userName}}</p>
+                <p>{{time(value.dynamic.createTime)}}</p>
+            </div>
+        </div>
+        <div class="content">
+            <p>{{value.dynamic.dynamicBody}}</p>
+        </div>
+        {{if value.dynamic.image.length!==0}}
+        <div class="state">
+            {{each spl(value.dynamic.image) as img i}}
+            <div>
+                <img src="{{img}}" onerror="this.src='../../img/main_logo.png'" data-preview-src="" data-preview-group="1" alt="">
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+        <div class="discuss">
+            <div onclick="location.href=''" class="p_discuss">
+                <i class="iconfont icon-evaluate"></i>
+                <span>{{value.dynamicComment}}</span>
+            </div>
+            <div class="z_discuss {{value.isUp==true?'active':''}}" data-dyid="{{value.dynamic.dynamicId}}">
+                <i class="iconfont icon-zan"></i>
+                <span>{{value.dynamicThumbsUp}}</span>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+    {{if message.dynamic.length==5}}
+    <div class="see_more" onclick="location.href='./mine_index_dynamic.html?userId={{message.userId}}'">查看更多>>></div>
+    {{/if}}
+    {{/if}}
+</script>
 <script>
     $(function () {
         mui.previewImage();
         mui('body').on('tap','a',function(){document.location.href=this.href;});
+
+        //获取好友信息
+        var accid=location.href.split("=")[1];
+        myAjax({url:"/user/getUser2",type:"post",data:{xysj:accid}}, function (data) {
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==0){
+                template.helper("rev", function (a) {
+                    return a.reverse();
+                });
+                template.helper("spl",function(str){
+                    return str.split(",")
+                });
+                template.helper("time",function(time){
+                    var timestamp=new Date().getTime();//当前时间戳
+                    var time=new Date(time).getTime();//当前时间戳
+                    var kk=timestamp-time;//发表时的时间戳
+                    var timea="";
+                    var sec=parseInt(kk/1000);//秒
+                    var min=parseInt(sec/60);//分
+                    var hour=parseInt(min/60);//时
+                    var day=parseInt(hour/24);//天
+                    if(sec<60){
+                        timea=sec+"秒前";
+                    }else if(min<60){
+                        timea=min+"分钟前";
+                    }else if(hour<24){
+                        timea=hour+"小时前";
+                    }else if(day<7){
+                        timea=day+"天前";
+                    }else{
+                        timea=new Date(time).toLocaleString().replace(/:\d{1,2}$/,' ').substr(5,12).replace(/\//g,"-");
+                    }
+                    return timea;
+                });
+                var age=data.message.age.split("-")[0];
+                age=new Date().getFullYear()-age;
+                $(".top_message").html(`
+                <p>
+                <span>${data.message.fullName}</span>
+                <em>${data.message.address}</em>
+                </p>
+                <aside>
+                <i>${age}岁</i>
+                <i>诚信积分 ${data.message.love}</i>
+                <i>爱心积分 ${data.message.sincerity}</i>
+                </aside>
+                `);
+                if(data.message.cover!==null){
+                    $(".header>img").attr("src",data.message.cover);
+                }
+                $(".dynamics").html(template("dynamic",data));
+            }
+        })
+        //分页查询
+      /*  loadmoreIndex($(".layer"),'/dynamic/findMyDynamic',{userId:accid,rows:3}, function (data) {
+            console.log(data);
+            $(".dynamics").append(template("dynamic",data));
+            //console.log(2);
+        })*/
+       /* //点赞 或取消点赞
+        function isHand(id,e){
+            myAjax({url:"/dynamic/addDynamicThumbsUp",data:{dynamicId:id},type:"POST"}, function (data) {
+                console.log(data);
+                if(data.code==0&&data.message=='点赞成功'){
+                    $(e).addClass("active");
+                    var hand_number=$(e).children("span").text();
+
+                    $(e).children("span").text(parseInt(hand_number)+1);
+                }else if(data.code==0&&data.message=='取消点赞成功'){
+                    $(e).removeClass("active");
+                    var hand_number=$(e).children("span").text();
+
+                    $(e).children("span").text(hand_number-1);
+
+                }
+            })
+        }
+        $(".middles").on("click",".z_discuss", function () {
+            var id=$(this).data("dyid");
+            //console.log(id);
+            isHand(id,this);
+
+        })*/
+        $(".icon_dete").click(function () {
+            $("#share").show();
+            $("#mask").show();
+            $("body").css("overflow",'hidden');
+        })
+        $(".main_content").on("click","#share .sure_delete ", function () {
+            $("#share").hide();
+            $("#mask") .hide();
+            $("body").css("overflow",'scroll');
+            myAjax({url:"/addFriend/deleteFriend",data:{xysj:accid},type:"post"}, function (data) {
+               var data=JSON.parse(data);
+                console.log(data);
+                if(data.code==0){
+                    mui.toast("已删除该好友");
+                }else{
+                    mui.toast(data.message);
+                }
+            })
+
+        })
+
+    $(".main_content").on("click","#share .quit_delete ", function () {
+        $("body").css("overflow",'scroll');
+        $("#share").hide();
+        $("#mask") .hide();
+        mui.toast("已取消")
+        })
+        $(".footer").click(function () {
+            location.href=`../message/chat.html?accid=${accid}`
+        })
+
     })
 </script>
 </html>

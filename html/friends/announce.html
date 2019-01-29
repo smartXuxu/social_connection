@@ -10,12 +10,14 @@
     <link rel="stylesheet" href="../../css/announce.css" />
     <link rel="stylesheet" href="../../js/common/webuplader/webuploader.css" />
     <link rel="stylesheet" href="../../css/common/webuploader/uploader.css" />
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css" />
 </head>
 <body>
 <div>
     <div class="head">
         <span onclick="back()">
-        <i class="iconfont icon-right"></i></span>
+        <i class="iconfont icon-right"></i>
+        </span>
         <h1 class="titles">亲友圈</h1>
         <span class="achieve">发布</span>
     </div>
@@ -37,11 +39,13 @@
 </div>
 <script src="../../js/x_rem.js"></script>
 <script src="../../js/common/jquery.min.js"></script>
+<script src="../../js/common/base.js"></script>
 <script src="../../js/common/webuplader/webuploader.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
 <script>
     $(function () {
+        var arr=[];
         // 封装成一个函数 调用的写法
-
         function uploader(ele,name){
             // 初始化Web Uploader
             name = WebUploader.create({
@@ -50,11 +54,12 @@
                 // swf文件路径
                 swf: './js/webuplader/Uploader.swf',
                 // 文件接收服务端。
-                server: 'http://webuploader.duapp.com/server/fileupload.php',
+                server: baseUrl+'/upload/uploadFile',
                 // 选择文件的按钮。可选。
                 // 内部根据当前运行是创建，可能是input元素，也可能是flash.
                 pick: ele,
-
+                fileNumLimit:9,//最多上传图片张数
+                compress: false,
                 // 只允许选择图片文件。
                 accept: {
                     title: 'Images',
@@ -105,6 +110,11 @@
             name.on( 'uploadSuccess', function( file,msg ) {
                 $( '#'+file.id ).addClass('upload-state-done');
                 console.log(msg);
+                if(msg.code===0){
+                    return arr.push(msg.message);
+                }
+               // console.log(arr);
+
             });
 
             // 文件上传失败，显示上传出错。
@@ -124,11 +134,49 @@
 // 完成上传完了，成功或者失败，先删除进度条。
             name.on( 'uploadComplete', function( file,res ) {
                 $( '#'+file.id ).find('.progress').remove();
-                console.log(res);
+                //console.log(res);
 
             });
         }
         uploader($("#filePicker"),uploader);
+        $(".achieve").click(function () {
+            //console.log(arr);
+            var body=$(".describe").val().trim();
+            if(arr.length==0&&body.length==0){
+                sweetAlert(
+                         "sorry",
+                        "不能发送空内容喔",
+                        "error"
+                )
+                return false;
+            }
+            if(arr.length==0){
+                arr='';
+            }else{
+                arr=arr.join(",");
+                console.log(arr);
+            }
+
+           myAjax({url:"/dynamic/addDynamic",type:"post",
+               data:{dynamicBody:body,image:arr}}, function (data) {
+               console.log(data);
+               if(data.code==0){
+                   sweetAlert(
+                           "恭喜您",
+                           "发布成功了",
+                           "success"
+                   ).then(function () {
+                               location.href='./friends-circle.html';
+                           })
+               }else{
+                   sweetAlert(
+                           "sorry",
+                           data.message,
+                           "error"
+                   )
+               }
+           })
+        })
     })
 </script>
 </body>

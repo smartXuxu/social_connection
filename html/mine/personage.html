@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../css/iconfont.css" />
     <link rel="stylesheet" href="../../css/personage.css" />
     <link rel="stylesheet" href="../../css/footer.css" />
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css" />
 </head>
 <body>
     <div class="head-one">
@@ -17,7 +18,18 @@
             <h1 class="titles">个人中心</h1>
         </div>
         <div class="cephalosome">
-            <div class="photo">
+            <div class="photo no_login">
+                <img src="../../img/no_login.png" onerror="this.src='../../img/main_logo.png'" alt="">
+            </div>
+            <div class="integral row no_login">
+                <div onclick="location.href='../login.html'" class="c_integral">
+                    <p>去登录</p>
+                </div>
+                <div onclick="location.href='../register.html'" class="a_integral">
+                    <p>去注册</p>
+                </div>
+            </div>
+           <!-- <div class="photo">
                 <img src="../../img/22.png" alt="">
             </div>
             <div class="name">
@@ -32,7 +44,7 @@
                     <p>50</p>
                     <p>爱心积分</p>
                 </div>
-            </div>
+            </div>-->
         </div>
     </div>
     <div class="middle-two">
@@ -70,13 +82,101 @@
 </body>
 <script src="../../js/common/x_rem.js"></script>
 <script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/zepto/touch.js"></script>
 <script src="../../js/common/base.js"></script>
+<script src="../../js/common/template/template-web.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script type="text/html" id="mine_data">
+    <div class="photo">
+        <img src="{{message.avatar}}" onerror="this.src='../../img/main_logo.png'" alt="">
+    </div>
+    <div class="name">
+        {{message.fullName}}&nbsp;&nbsp;ID:{{message.xysj}}
+    </div>
+    <div class="integral row">
+        <div onclick="location.href='integrity-integral.html?sincerity={{message.sincerity}}'" class="c_integral">
+            <p>{{message.sincerity}}</p>
+            <p>诚信积分</p>
+        </div>
+        <div onclick="location.href='love-points.html?love={{message.love}}'" class="a_integral">
+            <p>{{message.love}}</p>
+            <p>爱心积分</p>
+        </div>
+    </div>
+</script>
+<script type="text/html" id="no_login">
+    <div class="photo">
+        <img src="../../img/no_login.png" onerror="this.src='../../img/main_logo.png'" alt="">
+    </div>
+    <div class="integral row">
+        <div onclick="location.href='../login.html'" class="c_integral">
+            <p>去登录</p>
+        </div>
+        <div onclick="location.href='../register.html'" class="a_integral">
+            <p>去注册</p>
+        </div>
+    </div>
+</script>
 <script>
     $(function () {
+        /*双击退出APP*/
+        (function($, doc) {
+            $.init();
+            $.plusReady(function() {
+                var backButtonPress = 0;
+                $.back = function(event) {
+                    backButtonPress++;
+                    if (backButtonPress > 1) {
+                        plus.runtime.quit();
+                    } else {
+                        plus.nativeUI.toast('再按一次退出应用');
+                    }
+                    setTimeout(function() {
+                        backButtonPress = 0;
+                    }, 1000);
+                    return false;
+                };
+            });
+        }(mui, document));
         $('#footer').load('../common/footer.html');
         setTimeout(function () {
             $("#footer li:nth-of-type(4)").addClass("active").siblings().removeClass("active");
-        },300)
+            $("#footer li:nth-of-type(4) a i:nth-of-type(1)").addClass("icon-geren1").removeClass("icon-geren");
+        },300);
+        $.ajax({
+            url:baseUrl+"/user/getUser",
+            type: "post",
+            //async:false,
+            dataType: 'json',
+            xhrFields:{
+                withCredentials:true
+            },
+            /*headers:{
+             'token':localStorage.getItem("s_token")
+             },*/
+            success:function(data){
+                console.log(data);
+                if(data.code==0){
+                    $(".cephalosome").html(template("mine_data",data));
+                }else if(data.code==4){
+                    $(".cephalosome").html(template("no_login",data));
+                }
+                else{
+                    sweetAlert(
+                            "sorry",
+                            data.message,
+                            "error"
+                    )
+                }
+            },error: function (data) {
+                console.log(data);
+            }
+        })
+     /*$("body").swipeUp(function () {
+         mui.toast("下拉");
+     })*/
+
     })
 </script>
 </html>

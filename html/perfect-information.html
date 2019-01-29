@@ -22,19 +22,19 @@
     </div>
     <div class="middle-two">
         <div>
-            <div class="header_pic clearfix" onclick="location.href='./mine/head.html'">
+            <div class="header_pic clearfix" >
                 <img src="../img/11.png" alt="" class="f_left"/>
                 <em class="f_left">只能上传本人照片</em>
                 <i class="iconfont icon-icon1"></i>
                 <s class="f_right">上传头像</s>
             </div>
-            <div class="name">
+            <div class="name user_name">
                 <span>姓名：</span>
-                <input type="text" placeholder="请填写真实姓名"/>
+                <input type="text" placeholder="请填写真实姓名" />
             </div>
-            <div class="name">
+            <div class="name idNumber">
                 <span>身份证号：</span>
-                <input type="text" placeholder="请填写身份证号"/>
+                <input type="number" placeholder="请填写身份证号" />
             </div>
             <div class="name gender">
                 <span>性别：</span>
@@ -47,21 +47,12 @@
                     <span>男</span>
                 </div>
             </div>
-            <!--<div class="name clearfix">
-                <span>居住地：</span>
-                <p class="a_elect">请选择</p>
-                <i class="iconfont icon-icon1"></i>
-            </div>-->
+
             <div class="area name clearfix">
                 <span class="f_left">居住地：</span>
                 <i class="iconfont icon-icon1 f_right"></i>
                 <div id="city" class="address f_right">请选择居住地</div>
             </div>
-           <!-- <div class="name clearfix">
-                <span>出生日期：</span>
-                <p class="elect">请选择出生日期</p>
-                <i class="iconfont icon-icon1"></i>
-            </div>-->
             <div class="birthday clearfix name">
                 <span class="f_left">生日</span>
                 <i class="iconfont icon-icon1 f_right"></i>
@@ -71,10 +62,9 @@
             </div>
         </div>
     </div>
-    <div onclick="location.href='./message/information.html'" class="footer">
+    <div class="footer" >
         <button>完成</button>
     </div>
-</div>
 </body>
 <script src="../js/x_rem.js"></script>
 <script src="../js/common/jquery.min.js"></script>
@@ -101,28 +91,132 @@
             /* console.log(this);*/
         });
         //生日后期 添加
-        //生日
-        var obj={};
-        var birthday=$("#sign_up").val().trim()
-     /*   if(birthday==""){
-            sweetAlert(
-                    "对不起",
-                    "请您选择生日",
-                    "error"
-            )
-        }else{
-            obj.date=new Date(birthday).getTime();
-        }*/
-        var cardNo = "41282619960515522x";
+
+       /* var cardNo = "41282619960515522x";
             if(idcardReg.test(cardNo)) {
             // 合法
             console.log(1);
-        }
+        }*/
         /*选择男女*/
+        var gender=0;
         $(".gender>div").click(function () {
             $(this).addClass("active").siblings("div").removeClass("active");
+            gender=$(this).data("gender");
             console.log($(this).data("gender"));
         })
+        $(".header_pic").click(function () {
+            location.href=`./mine/head.html?123=register`
+        })
+        //判断有没有更换头像 显示
+        var avatar=localStorage.getItem("avatar");
+        if(avatar){
+           $(".header_pic>img").attr("src",avatar);
+        }
+        function register(){
+            var parms = {};
+            parms.phone=getRequest().phone;
+            parms.password=getRequest().pwd;
+            parms.code=getRequest().safe_code;
+            var user_name=$(".user_name>input").val().trim();
+            if(user_name.length==0){
+                sweetAlert(
+                        "sorry",
+                        "请您设置您的真实姓名",
+                        "error"
+                );
+               return;
+            }else{
+                parms.fullName=user_name;
+            }
+            var idNumber=$(".idNumber>input").val().trim();
+            var idcardReg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9Xx])$/;
+
+            if(idcardReg.test(idNumber)){
+                parms.idNumber=idNumber;
+            }else{
+                sweetAlert(
+                        "sorry",
+                        "身份证输入不合法",
+                        "error"
+                )
+                return;
+            }
+            if(avatar){
+                parms.avatar=avatar;
+            }else{
+                sweetAlert(
+                        "sorry",
+                        "请您更换头像",
+                        "error"
+                )
+                return;
+            }
+            if(gender==0){
+                parms.sax='女'
+            }else{
+                parms.sax='男'
+            }
+            var address=$("#city").text();
+            if(address=='请选择居住地'){
+                sweetAlert(
+                        "sorry",
+                        "请您选择居住地",
+                        "error"
+                )
+                return;
+            }else{
+             parms.address=address;
+            }
+            //生日
+            var birthday=$("#sign_up").val().trim();
+               if(birthday==""){
+             sweetAlert(
+             "对不起",
+             "请您选择生日",
+             "error"
+             )
+                   return;
+             }else{
+               parms.age=birthday;
+              // parms.age=new Date(birthday).getTime();
+             }
+            console.log(parms);
+            $.ajax({
+                xhrFields: {
+                    withCredentials: true
+                },
+                type: "post",
+                //contentType:'application/json;charset=UTF-8',
+                url: baseUrl+"/user/register",
+                data: parms,
+                dataType: 'json',
+                success: function (data){
+                    console.log(data);
+                    if(data.code=="0"){
+                       // onclick="location.href='./message/information.html'"
+                        sweetAlert(
+                                '恭喜您',
+                                '注册成功,请等待审核！',
+                                'success'
+                        ).then(function () {
+                                    localStorage.removeItem("avatar");
+                                    window.location.href="./login.html";
+                                })
+                    }
+                    else{
+                        sweetAlert(
+                                'sorry',
+                                data.message,
+                                'error'
+                        )
+                    }
+                }
+            })
+        }
+        $(".footer").click(function () {
+            register()
+        })
+
     })
 </script>
 <!--mui时间 -->

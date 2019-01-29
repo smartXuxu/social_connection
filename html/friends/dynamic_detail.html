@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="../../css/all.css" />
     <link rel="stylesheet" href="../../css/iconfont.css" />
     <link rel="stylesheet" href="../../css/dynamic_detail.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
 </head>
 <body>
 <div class="layer">
@@ -21,7 +22,7 @@
         <h1 class="titles">动态详情</h1>
     </div>
     <div class="main">
-        <div class="dynamic">
+    <!--    <div class="dynamic">
             <div class="dy_top">
                 <img src="../../img/focus-img1.png" alt=""/>
                 <div class="dy_middle_top">
@@ -76,12 +77,13 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
 
 
     </div>
     <div class="footer">
-    <input type="text" placeholder="写下评论吧..."/><em>发送</em>
+    <input type="text" placeholder="写下评论吧..."/>
+        <em class="send">发送</em>
     </div>
 </div>
 </body>
@@ -92,10 +94,212 @@
 <script src="../../js/common/mui/mui.min.js"></script>
 <script src="../../js/common/mui/mui.zoom.js"></script>
 <script src="../../js/common/mui/mui.preview.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script type="text/html" id="detail">
+    <div class="dynamic">
+        <div class="dy_top">
+            <img src="{{message.dynamic.userAvatar}}" onerror="this.src='../../img/main_logo.png'" alt=""/>
+            <div class="dy_middle_top">
+                <span>{{message.dynamic.userName}}</span>
+                <em>{{time(message.dynamic.createTime)}}</em>
+            </div>
+        </div>
+        <div class="dy_connect">
+            <p>{{message.dynamic.dynamicBody}}</p>
+            {{if message.dynamic.image.length!==0}}
+            <div class="state">
+                {{each spl(message.dynamic.image) as img i}}
+                <div>
+                    <img src="{{img}}" onerror="this.src='../../img/main_logo.png'" data-preview-src="" data-preview-group="1" alt="">
+                </div>
+                {{/each}}
+            </div>
+            {{/if}}
+        </div>
+        <div class="discuss">
+            <div class="p_discuss ">
+                <i class="iconfont icon-evaluate"></i>
+                <span>{{message.dynamicComment}}</span>
+            </div>
+            <div class="z_discuss {{message.isUp==true?'active':''}}" data-dyid="{{message.dynamic.dynamicId}}">
+                <i class="iconfont icon-zan"></i>
+                <span>{{message.dynamicThumbsUp}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="dy_comment">
+        <p><span>评论({{message.comment.length}})</span></p>
+        {{if message.comment.length>0}}
+        {{each rev(message.comment) as comment i}}
+        <div class="comment_father">
+            <div class="comment_father_content" data-userid="{{comment.one.userIdTo}}" data-username="{{comment.one.userIdToName}}" data-parent="{{comment.one.dynamicCommentId}}">
+                <div class="comment_father_top" >
+                    <img src="{{comment.one.userIdToAvatar}}" onerror="this.src='../../img/main_logo.png'" alt=""/>
+                    <div class="comment_father_center">
+                        <span>{{comment.one.userIdToName}}</span>
+                        <em>{{time(comment.one.createTime)}}</em>
+                    </div>
+                </div>
+                <div class="comment_text">
+                    {{comment.one.body}}
+                </div>
+            </div>
+            {{if comment.Two.length >0}}
+            <div class="comment_sons" >
+                {{each comment.Two as son j}}
+                <div class="comment_son" data-userid="{{son.userIdIN}}" data-username="{{son.userIdToName}}" data-parent="{{son.parentId}}">
+                    <em>{{son.userIdToName}}</em>回复 <em>{{son.userNameIN}}</em>：{{son.body}}
+                </div>
+                {{/each}}
+            </div>
+            {{/if}}
+        </div>
+        {{/each}}
+        {{/if}}
+    </div>
+</script>
+<script type="text/html" id="comment">
+
+</script>
 <script>
     $(function () {
         mui.previewImage();
         mui('body').on('tap','a',function(){document.location.href=this.href;});
+   var dyid=location.href.split("=")[1];
+        function render(){
+            myAjax({url:"/dynamic/findOneDynamic",data:{dynamicId:dyid},type:"post"}, function (data) {
+                var data=JSON.parse(data);
+                console.log(data);
+                if(data.code==0){
+                    template.helper("rev", function (a) {
+                        return a.reverse();
+                    });
+                    template.helper("spl",function(str){
+                        return str.split(",")
+                    });
+                    template.helper("time",function(time){
+                        var timestamp=new Date().getTime();//当前时间戳
+                        var time=new Date(time).getTime();//当前时间戳
+                        var kk=timestamp-time;//发表时的时间戳
+                        var timea="";
+                        var sec=parseInt(kk/1000);//秒
+                        var min=parseInt(sec/60);//分
+                        var hour=parseInt(min/60);//时
+                        var day=parseInt(hour/24);//天
+                        if(sec<60){
+                            timea=sec+"秒前";
+                        }else if(min<60){
+                            timea=min+"分钟前";
+                        }else if(hour<24){
+                            timea=hour+"小时前";
+                        }else if(day<7){
+                            timea=day+"天前";
+                        }else{
+                            timea=new Date(time).toLocaleString().replace(/:\d{1,2}$/,' ').substr(5,12).replace(/\//g,"-");
+                        }
+                        return timea;
+                    });
+                    $(".main").html(template("detail",data));
+                }
+            })
+        }
+        render();
+        //点赞 或取消点赞
+        function isHand(id,e){
+            myAjax({url:"/dynamic/addDynamicThumbsUp",data:{dynamicId:id},type:"POST"}, function (data) {
+                var data=JSON.parse(data);
+                console.log(data);
+                if(data.code==0&&data.message=='点赞成功'){
+                    $(e).addClass("active");
+                    var hand_number=$(e).children("span").text();
+
+                    $(e).children("span").text(parseInt(hand_number)+1);
+                }else if(data.code==0&&data.message=='取消点赞成功'){
+                    $(e).removeClass("active");
+                    var hand_number=$(e).children("span").text();
+
+                    $(e).children("span").text(hand_number-1);
+
+                }
+            })
+        }
+        $(".main").on("click",".z_discuss", function () {
+            var id=$(this).data("dyid");
+            //console.log(id);
+            isHand(id,this);
+
+        })
+        var params={},obj={};
+        var userIdIN, userNameIN,parentId;//被评论者id（你所回复的人id）
+      //被评论者姓名（你所回复的人）
+        //父品论id（你所回复的评论id）
+        params.dynamicId=dyid;
+        obj.dynamicId=dyid;
+        //发表评论
+        function comment(params){
+            myAjax({url:'/dynamic/addComment2',data:params,type:"post"}, function (data) {
+                console.log(data);
+            })
+        }
+        var flag=true;
+        $(".main").on("click",".comment_father_content", function () {
+            flag=false;
+            userIdIN=$(this).data("userid");
+            userNameIN=$(this).data("username");
+            parentId=$(this).data("parent");
+            $("input").attr("placeholder",`: ${userNameIN}`);
+        });
+        $(".main").on("click",".comment_son", function () {
+            flag=false;
+            userIdIN=$(this).data("userid");
+            userNameIN=$(this).data("username");
+            parentId=$(this).data("parent");
+            $("input").attr("placeholder",`: ${userNameIN}`);
+        });
+        $(".send").click(function () {
+            var body=$(".footer>input").val().trim();
+            if(body.length==0){
+               mui.toast("不能发表空内容");
+                return;
+            }
+            if(flag){
+                //回复的是动态
+                obj.body=body;
+                myAjax({url:"/dynamic/addComment",type:"post",data:obj}, function (data) {
+                    var data=JSON.parse(data);
+                    console.log(data);
+                    if(data.code==0){
+                        render()
+                        mui.toast("发表成功");
+                        $("input").val("");
+                    }
+                })
+            }else{
+                //回复评论的人
+                params.body=body;
+                params.userIdIN=userIdIN;
+                params.userNameIN=userNameIN;
+                params.parentId=parentId;
+                flag=true;
+                console.log(params);
+                myAjax({url:"/dynamic/addComment2",type:"post",data:params}, function (data) {
+                    var data=JSON.parse(data);
+                    console.log(data);
+                    if(data.code==0){
+                        render()
+                        mui.toast("发表成功");
+
+                        $("input").val('').attr("placeholder",`写下评论吧...`);
+                    }
+
+                })
+            }
+
+
+
+
+        })
     })
 </script>
 </html>

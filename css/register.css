@@ -30,6 +30,7 @@
     font-size:.3rem;
     color:#7b8df9;
 }
+
 .resetUpwd{
     height:.8rem;
     width:70%;
@@ -63,4 +64,22 @@
 .footers>img{
     width:100%;
     height:100%;
+}
+.pwd_number>i{
+    height: .8rem;
+    width: .6rem;
+    background: url("../img/eye.png") no-repeat center;
+    -webkit-background-size: 100%;
+    background-size: 100%;
+}
+.pwd{
+    width: 90%;
+}
+.pwd_number>em{
+    width: 0.6rem;
+    height: 0.6rem;
+    margin-top: 2%;
+    background: url("../img/eye.png") no-repeat center;
+    -webkit-background-size: 100%;
+    background-size: 100%;
 }

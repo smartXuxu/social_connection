@@ -7,8 +7,11 @@
     <title>个人资料</title>
     <link rel="stylesheet" href="../../css/base.css"/>
     <link rel="stylesheet" href="../../css/all.css" />
+    <link rel="stylesheet" href="../../css/common/address/address.css" />
     <link rel="stylesheet" href="../../css/iconfont.css" />
     <link rel="stylesheet" href="../../css/mine_data.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+
 </head>
 <body>
 <div class="layer">
@@ -22,10 +25,11 @@
         <div class="top_right">
             <i class="iconfont icon-bianji"></i>
             <p>更换封面</p>
+            <input type="file" id="file" accept="image/*" multiple/>
         </div>
     </header>
     <div class="main_content">
-        <div class="header_pic clearfix">
+       <!-- <div class="header_pic clearfix">
             <img src="../../img/focus-img1.png" alt="" class="f_left"/>
             <em class="f_left">只能上传本人照片</em>
             <i class="iconfont icon-icon1"></i>
@@ -42,23 +46,207 @@
         <div class="gender">
             <span>性别：</span>
             <em>
-                <i class="iconfont icon-nv1"></i>
-                女
+                <i class="iconfont icon-nan1" style="color:#a3a6fd;font-size: .4rem;"></i>
+                男
             </em>
         </div>
-        <div class="address">
+        <div class="address clearfix">
             <span>居住地：</span>
-            <input type="text" value="河南郑州"/>
+           &lt;!&ndash; <input type="text" value="河南郑州"/>&ndash;&gt;
             <i class="iconfont icon-icon1"></i>
+            <div id="city" class="address f_right">请选择居住地</div>
         </div>
         <div class="birthday">
             <span>出生日期：</span>
             <em>2000.05.06</em>
             <i class="iconfont icon-icon1"></i>
         </div>
-        <button class="save">保存</button>
+        <button class="save">保存</button>-->
     </div>
 </div>
 </body>
 <script src="../../js/x_rem.js"></script>
+<script src="../../js/common/jquery.min.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template-web.js"></script>
+<script src="../../js/common/address/common.js"></script>
+<script src="../../js/common/address/popt.js"></script>
+<script src="../../js/common/address/cityjson.js"></script>
+<script src="../../js/common/address/cityset.js"></script>
+<script type="text/html" id="mine_data">
+    <div class="header_pic clearfix" onclick="location.href='./head.html'">
+        <img src="{{message.avatar}}" onerror="this.src='../../img/main_logo.png'" alt="" class="f_left"/>
+        <em class="f_left">只能上传本人照片</em>
+        <i class="iconfont icon-icon1"></i>
+        <s class="f_right">上传头像</s>
+    </div>
+    <div class="name">
+        <span>姓名:</span>
+        <em>{{message.fullName}}</em>
+    </div>
+    <div class="id_name">
+        <span>ID:</span>
+        <em>{{message.xysj}}</em>
+    </div>
+    <div class="gender">
+        <span>性别：</span>
+        {{if message.sax=="女"}}
+        <em>
+            <i class="iconfont icon-nv1"></i>
+            女
+        </em>
+        {{else}}
+        <em>
+            <i class="iconfont icon-nan1" style="color:#a3a6fd;font-size: .4rem;"></i>
+            男
+        </em>
+        {{/if}}
+    </div>
+    <div class="address clearfix">
+        <span>居住地：</span>
+        <!-- <input type="text" value="河南郑州"/>-->
+        <i class="iconfont icon-icon1"></i>
+        <div id="city" class="address f_right">{{message.address}}</div>
+    </div>
+    <div class="birthday">
+        <span>出生日期：</span>
+        <em>{{message.age}}</em>
+        <i class="iconfont icon-icon1"></i>
+    </div>
+    <p>注意：个人资料只可更改封面与居住地，其余均不可修改</p>
+    <button class="save">保存</button>
+</script>
+<script>
+    $(function () {
+        /*地区选择*/
+        $(".main_content").on("click","#city", function (e) {
+            SelCity(this,e);
+        })
+       /* $("#city").click(function (e) {
+
+            /!* console.log(this);*!/
+        });*/
+        //更换封面图片
+        $("#file").change(function () {
+            var file=document.querySelector("#file").files[0];
+            console.log(file);
+            /* html5Reader(file,'header>img');
+            var base64=$("header>img").attr("src");
+            console.log(base64);*/
+            var url=baseUrl+'/upload/uploadFile';
+            var form = new FormData(); // FormData 对象
+            form.append("file", file); // 文件对象
+            //console.log(form);
+          /*  //第一种
+            var xhr = new XMLHttpRequest(); // XMLHttpRequest 对象
+            xhr.open("post",url, true); //post方式，url为服务器请求地址，true 该参数规定请求是否异步处理。
+            xhr.onload = uploadComplete; //请求完成
+            xhr.onerror = uploadFailed; //请求失败
+            xhr.send(form); //开始上传，发送form数据
+            //上传成功响应
+            function uploadComplete(evt) {
+                //服务端接收完文件返回的结果  注意返回json对象转换为数组
+                console.log(evt);
+                if(JSON.parse(evt.target.responseText).code==0){
+                    console.log(1);
+                   /!* var data=JSON.parse(evt.target.responseText);
+                    sweetAlert(
+                            "恭喜您",
+                            "视频上传成功",
+                            "success"
+                    );
+                    $(".no_upload>.load_tit>.quit_upload").text("成功");*!/
+                }else{
+
+                    sweetAlert(
+                            "sorry",
+                            JSON.parse(evt.target.responseText).msg,
+                            "error"
+                    )
+                }
+            }
+            //上传失败
+            function uploadFailed(evt) {
+                console.log(evt);
+            }*/
+            //第二种
+            $.ajax({
+                url: url,
+                data: form,
+                type: "Post",
+                dataType: "json",
+                cache: false,//上传文件无需缓存
+                processData: false,//用于对data参数进行序列化处理 这里必须false
+                contentType: false, //必须
+                success: function (result) {
+                    console.log(result);
+                    if(result.code==0){
+                        $("header>img").attr("src",result.message);
+                        var res=result.message;
+                        console.log(res);
+                        myAjax({url:"/user/updateCover",type:"post",data:{cover:res}}, function (data) {
+                            console.log(data);
+                            var data=JSON.parse(data);
+                            if(data.code!==0){
+                                sweetAlert(
+                                        "sorry",
+                                        data.message,
+                                        "error"
+                                )
+                            }
+                        })
+
+                    }
+
+                },
+            })
+          /*  myAjax({url:"/upload/uploadFile",data:{File:file},type:"post"}, function (data) {
+                console.log(data);
+                if(data.code==0){
+                    myAjax({url:"/user/updateCover",data:{Cover:data.message}}, function (data) {
+                        console.log(data);
+                    })
+                }
+
+            })*/
+        })
+
+        $.ajax({
+            url:baseUrl+"/user/getUser",
+            type: "post",
+            //async:false,
+            dataType: 'json',
+           /* headers:{
+                'token':localStorage.getItem("s_token")
+            },*/
+            xhrFields:{
+                withCredentials:true
+            },
+            success:function(data){
+                console.log(data);
+                if(data.code==0){
+                    if(data.message.cover!==null){
+                        $("header>img").attr("src",data.message.cover);
+                    }
+
+                  $(".main_content").html(template("mine_data",data));
+                }
+            },error: function (data) {
+                console.log(data);
+            }
+        })
+        //更换居住地
+       $(".main_content").on("click",".save", function () {
+           var address=$("#city").text();
+           myAjax({url:'/user/updateAddress',type:"post",data:{address:address}}, function (data) {
+               console.log(data);
+               if(data.code==0){
+                   $(".save").text("已保存");
+               }
+            })
+        })
+    })
+</script>
 </html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <title>沟通</title>
+    <link rel="stylesheet" href="../../css/base.css"/>
+    <link rel="stylesheet" href="../../css/all.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
+    <link rel="stylesheet" href="../../css/iconfont.css"/>
+    <link rel="stylesheet" href="../../css/message/online_ask.css"/>
+</head>
+<body>
+<div class="layer">
+    <div class=" head clearfix">
+         <span onclick="back()">
+        <i class="iconfont icon-right"></i>
+        </span>
+        <h1 class="titles">沟通</h1>
+       </div>
+    <section>
+        <div class="main clearfix">
+        <!-- <div class="right f_right">
+             <img src="../../img/focus-img1.png" class="f_right" alt=""/>
+             <div class="mess f_right">
+                 Hi,您好
+                 Hi,您好
+                 Hi,您好
+             </div>
+         </div>
+         <div class="left f_left">
+             <img src="../../img/focus-img1.png" class="f_left" alt=""/>
+             <div class="mess f_left">
+                 Hi,感谢你报名此职务~可能 无法及时回复消息，请见谅
+             </div>
+         </div>-->
+    </div>
+    </section>
+
+    <div class="send">
+        <input type="text" placeholder="发消息..." />
+        <em class="m_send">发送</em>
+    </div>
+</div>
+</body>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/jquery.min.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template-web.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script>
+    $(function () {
+        var href=location.href.split("=")[1];
+        console.log(href);
+        var accid=localStorage.getItem("uName");
+        function data(data){
+            console.log(data);
+        }
+        // 获取头像 聊天人的
+        var toAvater='../../img/main_logo.png',myAvater='../../img/main_logo.png',msgid;
+        myAjax({url:"/user/getUser2",async:false,data:{xysj:href},type:"post"}, function (data) {
+            if(data.code==0){
+                if(data.message.avatar!==null){
+                    toAvater=data.message.avatar;
+                }
+            }
+            console.log(data);
+        })
+        //自己的头像
+        myAjax({url:"/user/getUser",async:false,type:"post"}, function (data) {
+            console.log(data);
+            if(data.code==0){
+                if(data.message.avatar!==null){
+                    myAvater=data.message.avatar;
+                }
+            }
+        })
+       // myAjax({data:{accid:accid,faccid:href,type:1,msg:""},type:"post",url:"/im/addFriend"},data);
+        $(".m_send").click(function () {
+            //input的值
+            var mess=$('.send>input').val();
+            mess=$.trim(mess);
+            console.log(mess);
+            if(mess==''){
+                sweetAlert(
+                        'sorry',
+                        '您不能发送空消息！',
+                        'error'
+                )
+            }else{
+               /* var html="<div class='right f_right'><img src='../../img/focus-img1.png'class='f_right'/><div class='mess f_right'>"+mess+"</div></div>";
+                $('.main').append(html);
+                $('.send>input').val("");*/
+                sendMsg(mess);
+                $('section').scrollTop($('.main')[0].scrollHeight);
+                $('.send>input').val("");
+            }
+        })
+         getSessionMsg();
+        function getSessionMsg(){
+            $.ajax({
+                //处理session每次不唯一问题
+                xhrFields: {
+                    withCredentials: true
+                },
+                async:false,
+                type: "post",
+                url: baseUrl+"/im/querySessionMsg",
+                data:{
+                    to:href
+                },
+                dataType: 'json',
+                success:function(data) {
+                 // console.log(data);
+                    if(data.code==200){
+                        //$('.chat_main').append(123);
+                        console.log(data);
+                      /*  var from=localStorage.getItem("uName");
+                        console.log(from);*/
+                        data.msgs=data.msgs.reverse();
+                        for(var i=0;i<data.msgs.length;i++){
+                            // $('.chat_main').append(456);
+                            if(data.msgs[i].from!==href){
+                                //他人的
+                                if(i==data.msgs.length-1){
+                                    var html=`<div class='right f_right' data-myid=${data.msgs[i].msgid}><img src='${toAvater}' class='f_right'/><div class='mess f_right'>${data.msgs[i].body.msg}</div></div>`;
+                                    msgid=`${data.msgs[i].msgid}`;
+                                    getlastMessage(msgid)
+                                    console.log(msgid);
+                                }else{
+                                    var html=`<div class='right f_right'><img src='${toAvater}' class='f_right'/><div class='mess f_right'>${data.msgs[i].body.msg}</div></div>`;
+                                }
+                                $('.main').append(html);
+                            }else{
+                                //自己的
+                                if(i==data.msgs.length-1){
+                                    var to=`<div class='left f_left' data-myid=${data.msgs[i].msgid} ><img src='${myAvater}' class='f_left' /><div class='mess f_left'>${data.msgs[i].body.msg}</div></div>`;
+                                    msgid=`${data.msgs[i].msgid}`;
+                                    getlastMessage(msgid)
+                                }else {
+                                    var to=`<div class='left f_left'><img src='${myAvater}' class='f_left'/><div class='mess f_left'>${data.msgs[i].body.msg}</div></div>`;
+                                }
+                                $('.main').append(to);
+                            }
+                            $(window).bind('scroll', function () {
+                                //todo
+                                console.info(window.scrollY)
+                            })
+                        }
+
+                    }else{
+                        sweetAlert(
+                                'sorry',
+                                '网络错误啦，请您重新登录!',
+                                'error'
+                        ).then(function(){
+                                    location.href='../login.html'
+                                })
+                    }
+                },error: function (msg) {
+                    console.log(msg);
+                }
+
+            })
+        }
+        //刷新页面
+        setInterval(function(){
+            $(".main").html("");
+            getSessionMsg();
+        },3000);
+        //发送普通消息
+        function sendMsg(body){
+            /*  var obj={};
+             obj.ope=0;
+             obj.type=0;
+             obj.to=href;
+             obj.body=body;*/
+            //obj=JSON.stringify(obj);
+            //var obj={ope:0,type:0,to:href,body:"'"+body+"'"};
+            var obj={ope:0,type:0,to:href,body:body};
+            //obj=JSON.stringify(obj);
+            $.ajax({
+                //处理session每次不唯一问题
+                xhrFields: {
+                    withCredentials: true
+                },
+                async:false,
+                type: "post",
+                beforeSend: function () {
+                    $("#loading").show()
+                },
+                url: baseUrl+"/im/sendMsg",
+                data:obj,
+                /* {
+                 ope:0,
+                 type:0,
+                 to:href,
+                 body:{'msg':body}
+                 },*/
+                dataType: 'json',
+                success:function(data) {
+                    console.log(data);
+                    if(data.code==200){
+                        $("#loading").hide();
+                        $(".main").html("");
+                        getSessionMsg();
+                    }else{
+                        sweetAlert(
+                                'sorry',
+                                '网络错误啦，请您重新登录!',
+                                'error'
+                        ).then(function(){
+                                    location.href='./login.html'
+                                })
+                    }
+
+                }
+
+            })
+
+        }
+         $('section').scrollTop($('.main')[0].scrollHeight);
+        //关闭页面的时候发送该请求
+        document.addEventListener('visibilitychange', function () {
+            // 用户离开了当前页面
+            if (document.visibilityState === 'hidden') {
+                 myAjax({url:"/imRecord/addImRecord",data:{imId:msgid,in:href},type:"post"},function(data){
+                 console.log(data);
+                 })
+                document.title = '页面不可见';
+                console.log("页面不可见");
+            }
+
+            // 用户打开或回到页面
+            if (document.visibilityState === 'visible') {
+                document.title = '页面可见';
+                console.log("页面可见");
+            }
+
+        });
+
+        window.onbeforeunload=function (){
+            //alert("===onbeforeunload===");
+            if(event.clientX>document.body.clientWidth && event.clientY < 0 || event.altKey){ alert("你关闭了浏览器");
+                myAjax({url:"/imRecord/addImRecord",data:{imId:msgid,in:href},type:"post"},function(data){
+            console.log(data);
+        })
+            }/*else{
+                alert("你正在刷新页面");
+            }*/
+        }
+       /* myAjax({url:"/imRecord/addImRecord",data:{imId:`${data.msgs[i].msgid}`,in:href},type:"post"},function(data){
+        console.log(data);
+      })*/
+        function getlastMessage(msgid){
+            myAjax({url:"/imRecord/addImRecord",data:{imId:msgid,in:href},type:"post"},function(data){
+                console.log(data);
+            })
+        }
+    })
+</script>
+</html>

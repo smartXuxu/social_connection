@@ -40,13 +40,13 @@ div.header_pic {
     border-radius: 50%;
     vertical-align: middle;
     margin-right: 5%;
+     margin-top: 3%;
 }
  div.header_pic > em {
     font-size: 0.22rem;
     background-color: #dcdcdc;
     color: #ffffff;
     margin-top: 0.4rem;
-    height: 0.4rem;
     padding: 0.05rem 0.1rem;
     line-height: 0.4rem;
 }

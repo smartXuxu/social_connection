@@ -33,8 +33,8 @@ if (window.history && window.history.pushState) {
 //var baseUrl='http://192.168.1.181:8087' 海波;
 //var baseUrl='http://39.104.127.252:8087';
 //var baseUrl='http://39.104.127.252:8080/fkdp';
-var baseUrl='http://39.104.127.252:9696';
-plus.screen.lockOrientation('portrait-primary');
+var baseUrl='http://192.168.0.126:8888';
+//plus.screen.lockOrientation('portrait-primary');
 //锁死屏幕方向为竖屏
 function back(){
     history.go(-1);
@@ -168,11 +168,14 @@ function myAjax(parm,callback){
         dataType:"JSON",
         data:parm.data,
         url:baseUrl+parm.url,
-        headers:{
+        xhrFields: {
+            withCredentials: true
+        },
+      /*  headers:{
             //'Content-Type':'application/json',
            'Authorization':localStorage.getItem("cToken")
             //'Authorization':'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGxVc2VyIiwiaXNzIjoibmhiIiwidXNlcklkIjoyOSwiaWF0IjoxNTQ2NDgzMjMxLCJqdGkiOiJDQTg5MjgxOUQ0MkI0RjMwODdBNDdEMjYyRDEyMUNGRSJ9.RFAt7Trzz07-Gzxj7o4xb4srQrrdyZTLziu3TVw-exc'
-        },
+        },*/
         async:parm.async||"true",
         success: function (data) {
             callback&&callback(data);
@@ -184,7 +187,7 @@ function myAjax(parm,callback){
                 "网络发生错误,请您重新登录",
                 'error'
             ).then(function () {
-                location.href="../register.html"
+                location.href="../login.html"
             })
         }
     })
@@ -210,7 +213,7 @@ function ajax(url,data,type,callback){
 var _loadIndex =1,
     _loadState = 0;
 
-function loadmore(element,url,userId,successFn) {
+function loadmore(element,url,successFn) {
     $(element).on("scroll",function(){
         //当前可视容器高度
         var _elementHeight = $(element).outerHeight(),
@@ -222,7 +225,7 @@ function loadmore(element,url,userId,successFn) {
         if(_elementChildHeight - _elementScroll - 10 > _elementHeight){
             //console.log('没到底')
         }else {
-            //console.log('到底了')
+          // console.log('到底了')
             //当状态为0 的时候进行加载，防止重复加载
             if(_loadState == 0){
                 //状态更新为1
@@ -232,12 +235,12 @@ function loadmore(element,url,userId,successFn) {
                 //添加正在加载loadding
                 $(element).append('<p class="nowLoad">加载中...</p>');
                 //请求当前页数ajax
-                ajaxLoad(_loadIndex,userId);
+                ajaxLoad(_loadIndex);
             }
         }
     });
     //ajax请求
-    function ajaxLoad(_loadIndex,userId) {
+    function ajaxLoad(_loadIndex) {
         //更新发向服务器的数据，添加页数key值
        /* dataObj.page = page;
         dataObj.size = 4;
@@ -251,17 +254,17 @@ function loadmore(element,url,userId,successFn) {
             dataType:'json',
             async:false,
             data:{
-                size:3,
+                rows:6,
                 page:_loadIndex,
-                userId:userId
             },
             success:function (data) {
                // console.log(data);
-                //数据渲染  ajajx回调
-              successFn(data);
+
                 //当数据不为空的时候，更新状态
-                if(data.length > 0){
-                    //更新状态 为 0
+                if(data.message.length > 0){
+                    //更新状态 为 0、
+                    // /数据渲染  ajajx回调
+                    successFn(data);
                     _loadState = 0;
                     //删除正在加载loadding
                     $('.nowLoad').remove();
@@ -339,13 +342,14 @@ function loadmoreIndex(element,url,obj,successFn) {
             success:function (data) {
                // console.log(data);
                 //数据渲染  ajajx回调
-              successFn(data);
+
                 //当数据不为空的时候，更新状态
-                if(data.length > 0){
+                if(data.message.length > 0){
                     //更新状态 为 0
                     _loadState = 0;
                     //删除正在加载loadding
                     $('.nowLoad').remove();
+                    successFn(data);
                    /* function hg(){
                         $(".nowLoad").remove();
                     }
@@ -404,8 +408,9 @@ function html5Reader(file,ele){
     reader.readAsDataURL(file[0]);
     reader.onload = function (e) {
         var pic = document.querySelector(ele);
-        // console.log(reader.result);
-        pic.style.backgroundImage = "url(" + reader.result + ")";
+        //console.log(reader.result);
+        //pic.style.backgroundImage = "url(" + reader.result + ")";
+        pic.setAttribute("src",reader.result) ;
     }
 }
 //123=i&34=89 地址栏传多个参数

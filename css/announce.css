@@ -14,3 +14,9 @@ body,html{
 .p_picture{
     padding:.1rem .3rem .2rem .3rem;
 }
+.achieve{
+    width: .8rem;
+    height: 1rem;
+    line-height: 1rem;
+    top: 30%;
+}

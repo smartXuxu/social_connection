@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title>更多动态</title>
+    <link rel="stylesheet" href="../../css/base.css"/>
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css" />
+    <link rel="stylesheet" href="../../css/common/mui/mui_img.css" />
+    <link rel="stylesheet" href="../../css/all.css"/>
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css" />
+    <link rel="stylesheet" href="../../css/iconfont.css" />
+    <link rel="stylesheet" href="../../css/friends-circle.css" />
+    <link rel="stylesheet" href="../../css/footer.css" />
+</head>
+<body>
+<div class="layer">
+    <div class="head">
+        <span onclick="back()">
+        <i class="iconfont icon-right"></i></span>
+        <h1 class="titles">查看更多动态</h1>
+    </div>
+    <div class="middles">
+        <!---->
+    </div>
+</div>
+</body>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/mui/mui.zoom.js"></script>
+<script src="../../js/common/mui/mui.preview.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/zepto/outHeight.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script type="text/html" id="dynamic">
+    {{if message==null||message.length==0 }}
+    <div class="no_in">对不起，您的亲友圈中暂时没有动态</div>
+    {{else}}
+    {{each message as value i}}
+    <div class="dynamic">
+        <div onclick="location.href='../address_list/mine_index.html?accid={{value.dynamic.xysj}}'" class="h_photo row">
+            <div class="photo">
+                <img src="{{value.dynamic.userAvatar}}" onerror="this.src='../../img/main_logo.png'" alt="">
+            </div>
+            <div class="screen">
+                <p>{{value.dynamic.userName}}</p>
+                <p>{{time(value.dynamic.createTime)}}</p>
+            </div>
+        </div>
+        <div onclick="location.href='../friends/dynamic_detail.html?dynamicId={{value.dynamic.dynamicId}}'" class="content">
+            <p>{{value.dynamic.dynamicBody}}</p>
+        </div>
+        {{if value.dynamic.image.length!==0}}
+        <div class="state">
+            {{each spl(value.dynamic.image) as img j}}
+            <div>
+                <img src="{{img}}" onerror="this.src='../../img/main_logo.png'" data-preview-src="" data-preview-group="{{i}}" alt="">
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
+        <div class="discuss">
+            <div onclick="location.href='./dynamic_detail.html?dynamicId={{value.dynamic.dynamicId}}'" class="p_discuss">
+                <i class="iconfont icon-evaluate"></i>
+                <span>{{value.dynamicComment}}</span>
+            </div>
+            <div class="z_discuss {{value.isUp==true?'active':''}}" data-dyid="{{value.dynamic.dynamicId}}">
+                <i class="iconfont icon-zan "></i>
+                <span>{{value.dynamicThumbsUp}}</span>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+    {{/if}}
+</script>
+<script>
+    $(function () {
+        mui.previewImage();
+        mui('body').on('tap','a',function(){document.location.href=this.href;});
+        var accid=location.href.split("=")[1];
+        //朋友圈动态
+        myAjax({url:"/dynamic/searchDynamic",type:"post",data:{userId:accid,page:1,rows:5}}, function (data) {
+          var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==0){
+
+                template.helper("spl",function(str){
+                    return str.split(",")
+                });
+                template.helper("time",function(time){
+                    var timestamp=new Date().getTime();//当前时间戳
+                    var time=new Date(time).getTime();//当前时间戳
+                    var kk=timestamp-time;//发表时的时间戳
+                    var timea="";
+                    var sec=parseInt(kk/1000);//秒
+                    var min=parseInt(sec/60);//分
+                    var hour=parseInt(min/60);//时
+                    var day=parseInt(hour/24);//天
+                    if(sec<60){
+                        timea=sec+"秒前";
+                    }else if(min<60){
+                        timea=min+"分钟前";
+                    }else if(hour<24){
+                        timea=hour+"小时前";
+                    }else if(day<7){
+                        timea=day+"天前";
+                    }else{
+                        timea=new Date(time).toLocaleString().replace(/:\d{1,2}$/,' ').substr(5,12).replace(/\//g,"-");
+                    }
+                    return timea;
+                });
+
+                $(".middles").html(template("dynamic",data));
+            }else{
+                sweetAlert(
+                        "sorry",
+                        data.message,
+                        "error"
+                ).then(function () {
+                            location.href='../login.html'
+                        })
+            }
+        })
+        loadmoreIndex($(".middles"),'/dynamic/findMyDynamic',{userId:accid,rows:5}, function (data) {
+            //var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==0){
+                $(".middles").append(template("dynamic",data));
+            }else{
+                sweetAlert(
+                        "sorry",
+                        data.message,
+                        "error"
+                )
+            }
+        })
+       /* loadmore($(".middles"),"/dynamic/searchDynamic", function (data) {
+            console.log(data);
+            if(data.code==0){
+                $(".middles").append(template("dynamic",data));
+            }else{
+                sweetAlert(
+                        "sorry",
+                        data.message,
+                        "error"
+                )
+            }
+        })*/
+    })
+</script>
+</html>

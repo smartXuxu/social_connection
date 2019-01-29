@@ -7,9 +7,10 @@
     <title>注册</title>
     <link rel="stylesheet" href="../css/base.css" />
     <link rel="stylesheet" href="../css/register.css" />
+    <link rel="stylesheet" href="../css/common/sweetAlert/sweetalert2.css"/>
 </head>
 <body>
-<div>
+<div style="overflow-x: hidden">
     <div class="register row">
         <div onclick="location.href='login.html'" class="log">
             <span>登录</span>
@@ -19,20 +20,21 @@
         </div>
     </div>
     <div class="number">
-        <input type="text" placeholder="请输入手机号码/账号" class="resetUpwd" />
+        <input type="text" id="phone" placeholder="请输入手机号码" class="resetUpwd" />
     </div>
     <div class="number">
-        <input type="text" placeholder="请输入验证码" class="resetUpwd" />
-        <span>获取验证码</span>
+        <input type="text" placeholder="请输入验证码" class="resetUpwd safe_code" />
+        <span onclick="getcode()" class="gain">获取验证码</span>
     </div>
-    <div class="number">
-        <input type="text" placeholder="请输入密码" class="resetUpwd" />
+    <div class="number clearfix pwd_number">
+        <input type="password" placeholder="请设置密码6-20位字母、数字、下划线" class="resetUpwd pwd" />
+        <em class="f_right eye"></em>
     </div>
-    <div class="number">
+  <!--<div class="number">
         <input type="text" placeholder="请再次输入密码" class="resetUpwd" />
-    </div>
-    <div onclick="location.href='./perfect-information.html'">
-        <button class="numbers">下一步</button>
+    </div>-->
+    <div class='next'>
+        <button class="numbers ">下一步</button>
     </div>
     <div class="footers">
         <img src="../img/denglu.png" alt="">
@@ -41,7 +43,106 @@
 <script src="../js/common/x_rem.js"></script>
 <script src="../js/common/back.js"></script>
 <script src="../js/common/zepto/zepto.min.js"></script>
+<script src="../js/common/base.js"></script>
+<script src="../js/common/back.js"></script>
+<script src="../js/common/sweetAlert/sweetalert2.js"></script>
 <script>
+    //添加小眼睛 和 叉号
+    //点击小眼睛 改变input的状态
+    var flag=true;
+    $(".eye").click(function(){
+        if(flag){
+            $(".pwd_number input[type='password']").attr("type","text");
+            $(this).css("background-image","url(../img/close_eyes1.png)");
+            flag=false;
+        }else{
+            $(".pwd_number input[type='text']").attr("type","password");
+            $(this).css("background-image","url(../img/eye.png)");
+            flag=true;
+        }
+    });
+    var falg = true;
+    var mobile;
+    function getcode(){
+        if(!falg){
+            return;
+        }
+       mobile = $('#phone').val();
+        if(!checkTelNum(mobile)){
+            alert('手机号码不正确');
+            $('#phone').val("");
+            return false;
+        }
+        falg = false;
+        $.ajax({
+            xhrFields: {
+                withCredentials: true
+            },
+            type: "post",
+            url: baseUrl+"/user/doCode",
+            data: {
+                mobilePhone:mobile
+            },
+            datType: 'json',
+            success: function (data){
+                console.log(data);
+                //alert(data);
+               if(data.code!==0){
+                   return;
+                }
+            }
+        })
+    }
+    //点击下一步
+    $(".next").click(function () {
+        var safe_code=$(".safe_code").val().trim();
+        if(safe_code.length==0){
+            sweetAlert(
+                    "sorry",
+                    "请您输入短信验证码",
+                    "error"
+            );
+            return;
+        }
+        var pwd=$(".pwd").val().trim();
+        var patern=/^(\w){6,20}$/;
+        if(!patern.exec(pwd)){
+            sweetAlert(
+                    "sorry",
+                    '密码格式为6-20位字母、数字、下划线',
+                    "error"
+            );
+            return;
+        }
+      location.href=`./perfect-information.html?phone=${mobile}&safe_code=${safe_code}&pwd=${pwd}`;
+    })
+    //验证手机号
+    function checkTelNum(telNum){
+        if(!/^1[0-9]{10}$/.test(telNum)){
+            return false;
+        }
+        return true;
+    }
+    //验证不为空
+    function isNotBlank(data) {
+        return (data == "" || typeof(data)  == "undefined"|| data == null ) ? false : true;
+    }
+    //倒计时效果
+    $(".gain").click(function(){
+        var time=60;
+        $(this).text(time+ "S");
+        var timer= setInterval(function(){
+            time--;
+            $(".gain").text(time+ "S");
+            if(time<0){
+                clearInterval(timer);
+                $(".gain").text("重新发送");
+                $(".Verification input").val("");
+                time=60;
+            }
+        },1000)
+    })
+
 
 </script>
 </body>

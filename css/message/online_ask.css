@@ -1,0 +1,96 @@
+header>del{
+    position: absolute;
+    right: 3%;
+    top: 24%;
+    color: #ffffff;
+    font-size: 0.28rem;
+}
+html{
+    background-color: #eeeeee;
+}
+section{
+    position: fixed;
+    top:1.8rem;
+    width: 100%;
+    bottom: 1.1rem;
+    left: 0;
+    overflow-y: scroll;
+}
+.main{
+    width: 100%;
+    height:auto ;
+    padding: 0.3rem;
+/*
+    padding-top: 2rem;
+    padding-bottom: 1.2rem;*/
+}
+.main>.left:first-of-type{
+    margin-top: 0.3rem;
+}
+.main>.left{
+    width: 100%;
+    margin-top: 0.3rem;
+}
+.main img{
+    width: 0.8rem;
+    height: 0.8rem;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    vertical-align: top;
+}
+.main>.left>img{
+    margin-right: 0.3rem;
+}
+.mess{
+    background-color:#fff ;
+    max-width: 70%;
+    padding: 0.2rem;
+    height: auto;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    word-wrap:break-word;
+}
+.main>.right{
+    margin-top: 0.3rem;
+    width: 100%;
+}
+.main>.right .mess{
+    background-color: #f0a30a;
+    color: #ffffff;
+}
+.main>.right>img{
+    margin-left: 0.2rem;
+}
+.send{
+    width: 100%;
+    height: 0.98rem;
+    background-color: #fff;
+    position: fixed;
+    z-index: 1;
+    bottom: 0;
+}
+.send>input{
+    width: 75%;
+    height: 0.8rem;
+    margin-top: 0.1rem;
+    border: 1px solid #f2f2f2;
+    margin-left: 0.2rem;
+    padding-left: 0.3rem;
+    border-radius: 5px;
+}
+.send>em{
+    width: 1.2rem;
+    margin-left: 0.2rem;
+    display: inline-block;
+    text-align: center;
+    height: 0.6rem;
+    line-height: 0.6rem;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    color: #999999;
+    background-color: #eeeeee;
+
+}

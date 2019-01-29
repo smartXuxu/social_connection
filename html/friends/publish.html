@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+
+    <title>发布亲友圈</title>
+    <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/iconfont.css" />
+    <link rel="stylesheet" href="../../css/all.css" />
+    <link rel="stylesheet" href="../../css/announce.css" />
+    <link rel="stylesheet" href="../../css/message/publish.css" />
+</head>
+<body>
+<div class="layer">
+    <div class="head">
+        <span onclick="back()">
+        <i class="iconfont icon-right"></i>
+        </span>
+        <h1 class="titles">亲友圈</h1>
+        <span class="achieve">发布</span>
+    </div>
+    <div class="middle-three">
+        <div class="p_picture">
+            <div>
+                <textarea class="describe" placeholder="想说点啥，就说吧"></textarea>
+            </div>
+            <div class="picture">
+                <div class="pic_box">
+                    <input type="file" id="file1" name="file" onchange="ajaxFileUpload()"/>
+                    <span></span>
+                </div>
+
+                <!-- <img src="../../img/tianjia.png" alt="">-->
+                <div class="imgs_box">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../js/x_rem.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/jquery.min.js"></script>
+<script src="../../js/common/ajaxFileupload/ajaxfileupload.js"></script>
+<script>
+    $(function () {
+        /*$(":button").click(function () {
+            ajaxFileUpload();
+        })*/
+    })
+    var arr=[];
+    function ajaxFileUpload() {
+        $.ajaxFileUpload({
+                    url: baseUrl+'/upload.aspx', //用于文件上传的服务器端请求地址
+                    secureuri: false, //是否需要安全协议，一般设置为false
+                    fileElementId: 'file1', //文件上传域的ID
+                    dataType: 'json', //返回值类型 一般设置为json
+                    success: function (data, status) //服务器成功响应处理函数
+                    {
+                        $("#img1").attr("src", data.imgurl);
+                        if (typeof (data.error) != 'undefined') {
+                            if (data.error != '') {
+                                alert(data.error);
+                            } else {
+                                alert(data.msg);
+                            }
+                        }
+                    },
+                    error: function (data, status, e)//服务器响应失败处理函数
+                    {
+                        alert(e);
+                    }
+                }
+        )
+        return false;
+    }
+</script>
+</html>

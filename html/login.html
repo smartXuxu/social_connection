@@ -7,36 +7,214 @@
     <title>登录</title>
     <link rel="stylesheet" href="../css/base.css" />
     <link rel="stylesheet" href="../css/register.css" />
+    <link rel="stylesheet" href="../css/common/sweetAlert/sweetalert2.css" />
 </head>
 <body>
-<div>
-<div class="register row">
-    <div onclick="location.href='./login.html'" class="enter">
-        <span>登录</span>
-    </div>
-    <div onclick="location.href='register.html'" class="log">
-        <span>注册</span>
-    </div>
-</div>
-    <div class="number">
-        <input type="text" placeholder="请输入手机号码/账号" class="resetUpwd" />
+<div style="overflow-x: hidden">
+    <div class="register row">
+        <div onclick="location.href='./login.html'" class="enter">
+            <span>登录</span>
+        </div>
+        <div onclick="location.href='register.html'" class="log">
+            <span>注册</span>
+        </div>
     </div>
     <div class="number">
-        <input type="text" placeholder="请输入密码" class="resetUpwd" />
+        <input type="text" placeholder="请输入手机号码/账号" class="resetUpwd" id="name"/>
     </div>
-    <div onclick="location.href='./message/information.html'">
-       <button class="numbers">登录</button>
+    <div class="number clearfix pwd_number password">
+        <input type="password" placeholder="请输入密码" class="resetUpwd" id="pwd" />
+        <i class="eye f_right"></i>
+    </div>
+    <div  class="login_Button">
+        <button class="numbers">登录</button>
     </div>
     <div onclick="location.href='./retrieve-password.html'" class="forget">
-      忘记密码?
+        忘记密码?
     </div>
     <div class="footers">
         <img src="../img/denglu.png" alt="">
     </div>
 </div>
-
 </body>
 <script src="../js/x_rem.js"></script>
 <script src="../js/common/back.js"></script>
 <script src="../js/common/base.js"></script>
+<script src="../js/common/zepto/zepto.min.js"></script>
+<script src="../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../js/common/base64.min.js"></script>
+<script>
+    $(function () {
+        //登录
+        //点击小眼睛 改变input的状态
+        var flag=true;
+        $(".eye").click(function(){
+            if(flag){
+                $(".password input[type='password']").attr("type","text");
+                $(this).css("background-image","url(../img/close_eyes1.png)");
+                flag=false;
+            }else{
+                $(" .password input[type='text']").attr("type","password");
+                $(this).css("background-image","url(../img/eye.png)");
+                flag=true;
+            }
+        });
+
+        function login() {
+            var uName = $("#name").val();
+            var pwd = $("#pwd").val();
+            var obj = {};
+            if (isNotBlank(uName)) {
+                if (!checkTelNum(uName)) {
+                    alert('手机号/用户名格式不正确，请您重新输入');
+                    $("input").val("");
+                    return false;
+                }
+                else {
+                    obj.phone= uName;
+                }
+            }
+            else {
+                alert('手机号/用户名不能为空');
+                $("input").val("");
+                return false;
+            }
+            if (isNotBlank(pwd)) {
+                obj.password = pwd;
+            } else {
+                alert('密码不能为空');
+                $("#pwd").val("");
+                return false;
+            }
+            //console.log(uName.length);
+            //console.log(JSON.stringify(obj));
+            //还需要验证数据库里面有没有这个手机号的记录需要发送ajax
+            if(uName.length==11){
+                //手机号
+                $.ajax({
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    type: "post",
+                    async: false,
+                    url: baseUrl+"/user/mobilePhoneLogin",
+                    data: obj,
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        if (data.code ==0) {
+                            //localStorage.setItem('s_token',data.message);
+                            /* localStorage.setItem('user', data.code);*/
+                            //用户登录成功之后 存储用户输入的值
+                            var loUser = localStorage.setItem('uName',uName);
+                            // 获取设置的本地存储的密码的值 base64加密
+                            pwd=base64.tranCode.encode(pwd);
+                            var loPass = localStorage.setItem('pwd',pwd);
+                           window.location.href ='./message/information.html';
+                        }else{
+                            sweetAlert(
+                                    '登录失败',
+                                    data.msg,
+                                    'error'
+                            ).then(function () {
+                                        $("#pwd").val("");
+                                    })
+                        }
+                    },
+                    error: function (data) {
+                        sweetAlert(
+                                "sorry",
+                                data.msg,
+                                "error"
+                        )
+                    }
+                })
+            }else if(uName.length==10){
+                var parms={};
+                parms.xysj=uName;
+                parms.password=pwd;
+                //console.log(parms);
+                $.ajax({
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    type: "post",
+                    async: false,
+                    url: baseUrl + "/user/xysjLogin",
+                    data:parms,
+                    dataType: 'json',
+                    success: function (data) {
+                        console.log(data);
+                        if (data.code == 0) {
+                          //  localStorage.setItem('s_token', data.message);
+                            //用户登录成功之后 存储用户输入的值
+                            var loUser = localStorage.setItem('uName',uName);
+                            // 获取设置的本地存储的密码的值 base64加密
+                            pwd=base64.tranCode.encode(pwd);
+                            var loPass = localStorage.setItem('pwd',pwd);
+                            window.location.href ='./message/information.html';
+                        }else{
+                            sweetAlert(
+                                    "sorry",
+                                    data.message,
+                                    "error"
+                            )
+                        }
+                    },
+                    error: function (data) {
+                        sweetAlert(
+                                "sorry",
+                                data.message,
+                                "error"
+                        )
+                    }
+                })
+            }
+
+
+
+        }
+        //页面加载 渲染的时候要判断是否存在
+
+
+        function isChecked(){
+            //获取cookie
+            var cusername = localStorage.getItem("uName");
+            var cpassword = localStorage.getItem("pwd");
+            if(cusername != "" && cpassword != ""){
+                $("#name").val(cusername);
+                $("#pwd").val(base64.tranCode.decode(cpassword));
+                //$("#pwd").val(cpassword);
+            }
+        }
+        if(localStorage.getItem("uName") && localStorage.getItem("pwd")){
+            isChecked();
+        }
+
+        /*点击的登录 调用此函数  */
+        $(".login_Button").click(function(){
+            login();
+        });
+        //点击注册 跳转到注册界面
+        $(".register_Button").click(function(){
+            window.location.href="./register.html";
+        });
+        //点击忘记密码
+        $(".forget_password").click(function () {
+            window.location.href="./findPassword.html";
+        });
+        //验证不为空
+        function isNotBlank(data) {
+            return (data == "" || typeof(data)  == "undefined"|| data == null ) ? false : true;
+        }
+        //验证手机号
+        function checkTelNum(telNum){
+            if(!/^1[0-9]{10}$/.test(telNum)&&!/^[0-9]{10}$/.test(telNum)){
+                return false;
+            }
+            return true;
+        }
+
+    })
+</script>
 </html>

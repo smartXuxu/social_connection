@@ -2,47 +2,125 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title><meta name="viewport"
-                              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>系统消息</title>
     <link rel="stylesheet" href="../../css/base.css" />
+    <link rel="stylesheet" href="../../css/common/mui/mui.min.css" />
     <link rel="stylesheet" href="../../css/iconfont.css" />
     <link rel="stylesheet" href="../../css/all.css" />
     <link rel="stylesheet" href="../../css/system-message.css" />
 </head>
 <body>
-   <div>
-       <div class="head">
+<div>
+    <div class="head">
         <span onclick="back()">
         <i class="iconfont icon-right"></i></span>
-           <h1 class="titles">系统消息</h1>
-       </div>
-       <div class="middle">
-           <div class="detail">
-               <p>2018-07-21 15:36</p>
-               <div class="a_brief">
-                   <div class="brief">
-                       <span>注册认证</span>
-                       <i class="iconfont icon-cuohao"></i>
-                   </div>
-                   <p>恭喜您已通过注册认证！</p>
-               </div>
-           </div>
-           <div class="detail">
-               <p>2018-07-21 15:36</p>
-               <div class="a_brief">
-                   <div class="brief">
-                       <span>注册认证</span>
-                       <i class="iconfont icon-cuohao"></i>
-                   </div>
-                   <p>恭喜您已通过注册认证！</p>
-               </div>
-           </div>
-       </div>
-   </div>
+        <h1 class="titles">系统消息</h1>
+    </div>
+    <div class="middle">
+       <!-- <div class="detail">
+            <p>2018-07-21 15:36</p>
+            <div class="a_brief">
+                <div class="brief">
+                    <span>注册认证</span>
+                    <i class="iconfont icon-cuohao"></i>
+                </div>
+                <p>恭喜您已通过注册认证！</p>
+            </div>
+        </div>
+        <div class="detail">
+            <p>2018-07-21 15:36</p>
+            <div class="a_brief">
+                <div class="brief">
+                    <span>注册认证</span>
+                    <i class="iconfont icon-cuohao"></i>
+                </div>
+                <p>恭喜您已通过注册认证！</p>
+            </div>
+        </div>-->
+    </div>
+</div>
 
 </body>
 <script src="../../js/x_rem.js"></script>
+<script src="../../js/common/mui/mui.min.js"></script>
 <script src="../../js/common/back.js"></script>
 <script src="../../js/common/base.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script type="text/html" id="list">
+    {{if rows.length==0}}
+    <div class="no_in">对不起，暂时没有系统消息</div>
+    {{else}}
+    {{each rows as value i}}
+    <div class="detail">
+        <p>{{time(value.createTime)}}</p>
+        <div class="a_brief">
+            <div class="brief">
+                <span>{{value.title}}</span>
+                <i class="iconfont icon-cuohao" data-systemmessageid="{{value.systemMessageId}}"></i>
+            </div>
+            <p>{{value.body}}</p>
+        </div>
+    </div>
+    {{/each}}
+    {{/if}}
+
+</script>
+<script>
+
+    $(function () {
+        myAjax({url:"/systemMessage/findSystemMessage",type:"post",data:{page:1,rows:5}}, function (data) {
+           var data=JSON.parse(data);
+            console.log(data);
+                template.helper("time",function(time){
+                    var timestamp=new Date().getTime();//当前时间戳
+                    var time=new Date(time).getTime();//当前时间戳
+                    var kk=timestamp-time;//发表时的时间戳
+                    var timea="";
+                    var sec=parseInt(kk/1000);//秒
+                    var min=parseInt(sec/60);//分
+                    var hour=parseInt(min/60);//时
+                    var day=parseInt(hour/24);//天
+                    if(sec<60){
+                        timea=sec+"秒前";
+                    }else if(min<60){
+                        timea=min+"分钟前";
+                    }else if(hour<24){
+                        timea=hour+"小时前";
+                    }else if(day<7){
+                        timea=day+"天前";
+                    }else{
+                        timea=new Date(time).toLocaleString().replace(/:\d{1,2}$/,' ').substr(5,12).replace(/\//g,"-");
+                    }
+                    return timea;
+                });
+            $(".middle").html(template("list",data));
+        })
+        //分页加载更多
+        loadmoreIndex($(".middle"),"/systemMessage/findSystemMessage",{rows:5}, function (data) {
+            var data=JSON.parse(data);
+            $(".middle").append(template("list",data));
+        })
+        function deleteId(id){
+            myAjax({url:"/systemMessage/deleSystemMessageOne",type:"post",data:{systemMessageId:id}}, function (data) {
+                var data=JSON.parse(data);
+                console.log(data);
+                if(data.code==0){
+                    mui.toast("删除成功")
+                }else{
+                    mui.toast(data.message);
+                }
+            })
+        }
+
+        $(".middle").on("click",".icon-cuohao", function (data) {
+            var id=$(this).data("systemmessageid");
+            console.log(id);
+           // $(this).parents().children().children(".detail").hide();
+            $(this).closest(".detail").hide();
+            deleteId(id);
+        })
+    })
+</script>
 </html>

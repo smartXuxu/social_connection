@@ -19,8 +19,8 @@
     </div>
     <div class="middle-three">
         <div class="photo">
-            <span>手机号</span>
-            <span>151****5202</span>
+            <span>在线状态</span>
+            <span class="phone" style="color:#7b8df9">√</span>
         </div>
         <div onclick="location.href='./change-password.html'" class="a_photo">
             <span>修改密码</span>
@@ -32,4 +32,34 @@
 <script src="../../js/x_rem.js"></script>
 <script src="../../js/common/back.js"></script>
 <script src="../../js/common/base.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script>
+    $(function () {
+      /*  $.ajax({
+            url:baseUrl+"/user/getUser",
+            type: "post",
+            //async:false,
+            dataType: 'json',
+            xhrFields:{
+                withCredentials:true
+            },
+            success:function(data){
+                console.log(data);
+                if(data.code==0){
+                 $(".phone").text(``)
+                }
+                else{
+                    sweetAlert(
+                            "sorry",
+                            data.message,
+                            "error"
+                    )
+                }
+            },error: function (data) {
+                console.log(data);
+            }
+        })*/
+
+    })
+</script>
 </html>

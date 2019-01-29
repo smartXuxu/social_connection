@@ -7,13 +7,13 @@
     background-color:#fff;
     border-top:.01rem solid #eee;
 }
-.footer-one{
-    width:25%;
-    height:.98rem;
-}
 .footer>ul{
     width: 100%;
     height: 100%;
+}
+.footer li{
+    width: 25%;
+    text-align: center;
 }
 .footer li a{
     display: block;
@@ -29,6 +29,7 @@
 .shouye{
     color:#99cdff;
 }
+
 .footer li a i:nth-of-type(1).list{
     font-size:.5rem;
    /* color:#778afb;*/
@@ -40,8 +41,23 @@
 }
 .footer li a i:nth-of-type(1){
     font-size:.5rem;
-    margin-top:.1rem;
+    height: .7rem;
+    line-height: .7rem;
 }
 .footer li a i:nth-of-type(2){
     font-size:.24rem;
+    height: .3rem;
+    line-height: .3rem;
+}
+.footer .first a i:nth-of-type(1){
+    font-size: .46rem;
+}
+.footer li a i:nth-of-type(1).friendss{
+    font-size: .48rem;
+}
+.footer .active a i:nth-of-type(1).friendss{
+    font-size: .58rem;
+}
+.footer li:last-of-type.active a i:nth-of-type(1){
+    font-size: .6rem;
 }

@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>新朋友</title>
     <link rel="stylesheet" href="../../css/base.css" />
     <link rel="stylesheet" href="../../css/iconfont.css" />
     <link rel="stylesheet" href="../../css/all.css" />
     <link rel="stylesheet" href="../../css/new-friend.css" />
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css" />
 </head>
 <body>
 <div>
@@ -18,7 +18,7 @@
         <h1 class="titles">新朋友</h1>
     </div>
     <div class="middle-two">
-        <div class="add">
+       <!-- <div class="add">
             <div class="a_add">
                 <span>145623314</span><span>该账号申请加为好友</span>
             </div>
@@ -28,11 +28,57 @@
             <div class="reject">
                 <span>拒绝</span>
             </div>
-        </div>
+        </div>-->
     </div>
 </div>
 </body>
 <script src="../../js/x_rem.js"></script>
 <script src="../../js/common/back.js"></script>
 <script src="../../js/common/base.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/template/template-web.js"></script>
+<script type="text/html" id="new_add">
+{{if message==null||message==''||message.length==0}}
+<div class="no_in">对不起，您暂时没有好友申请</div>
+{{else}}
+    {{each message as value i}}
+        <div class="add">
+            <div class="a_add">
+                <span>{{value.toId}}</span><span>该账号申请加为好友</span>
+            </div>
+            <div class="agree" onclick="deal('/addFriend/agreeFriend','{{value.addFriendId}}',this)">
+                <span>同意</span>
+            </div>
+            <div class="reject" onclick="deal('/addFriend/refuseFriend','{{value.addFriendId}}',this)">
+                <span>拒绝</span>
+            </div>
+        </div>
+    {{/each}}
+    {{/if}}
+</script>
+<script>
+  //处理申请
+  function deal(url,id,e){
+      myAjax({url:url,data:{addFriendId:id},type:"post"}, function (data) {
+          var data=JSON.parse(data);
+          console.log(data);
+          if(data.code==0){
+              $(e).text("已处理");
+             // back();
+          }
+      })
+  }
+    $(function () {
+       myAjax({url:"/addFriend/selectFriend",type:"post"}, function (data) {
+         var data=JSON.parse(data);
+           console.log(data);
+           if(data.code==0){
+               $(".middle-two").html(template("new_add",data));
+           }
+       })
+
+
+    })
+</script>
 </html>

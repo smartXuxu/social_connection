@@ -9,35 +9,36 @@
     <link rel="stylesheet" href="../../css/all.css" />
     <link rel="stylesheet" href="../../css/iconfont.css" />
     <link rel="stylesheet" href="../../css/love-score-ranking.css" />
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css"/>
 </head>
 <body>
-<div>
+<div class="layer">
     <div class="heads">
-        <span onclick="back()">
+        <span onclick="location.href='./address-list.html'">
         <i class="iconfont icon-right"></i></span>
         <h1 class="titles">积分排行榜</h1>
     </div>
     <div class="middle-two">
-        <div class="rank">
+        <!--<div class="rank">
             <p>我的今日排名</p>
             <span>16592</span><span>名</span>
-        </div>
+        </div>-->
         <div class="a_rank">
-            <span>诚信积分 20</span>
-            <span>爱心积分 36</span>
+            <span class="sincerity">诚信积分 <i>20</i></span>
+            <span class="love">爱心积分 <i>36</i></span>
         </div>
         <div class="b_list">
             <div class="f_list row">
                 <div class="a_list">
                     <span>诚信积分榜</span>
                 </div>
-                <div onclick="location.href='./love-score-ranking.html'" class="c_list">
+                <div  class="c_list">
                     <span>爱心积分榜</span>
                 </div>
             </div>
             <div class="first">
                 <ul>
-                    <li>
+                   <!-- <li>
                         <img src="../../img/jinpai.png" alt="">
                         <div class="photo">
                             <img src="../../img/11.png" alt="">
@@ -85,6 +86,30 @@
                         <span>李向阳</span>
                         <span>1500</span>
                     </li>
+                    <li>
+                        <i>6</i>
+                        <div class="photo">
+                            <img src="../../img/33.png" alt="">
+                        </div>
+                        <span>李向阳</span>
+                        <span>1500</span>
+                    </li>
+                    <li>
+                        <i>6</i>
+                        <div class="photo">
+                            <img src="../../img/33.png" alt="">
+                        </div>
+                        <span>李向阳</span>
+                        <span>1500</span>
+                    </li>
+                    <li>
+                        <i>6</i>
+                        <div class="photo">
+                            <img src="../../img/33.png" alt="">
+                        </div>
+                        <span>李向阳</span>
+                        <span>1500</span>
+                    </li>-->
                 </ul>
             </div>
         </div>
@@ -94,4 +119,79 @@
 <script src="../../js/x_rem.js"></script>
 <script src="../../js/common/back.js"></script>
 <script src="../../js/common/base.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/zepto/outHeight.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script type="text/html" id="ranking">
+    {{each message as value i}}
+    {{if i==0}}
+    <li>
+        <img src="../../img/jinpai.png" alt="">
+        <div class="photo">
+            <img src="{{value.avatar}}" alt="">
+        </div>
+        <span>{{value.fullName}}</span>
+        <span>{{value.sincerity}}</span>
+    </li>
+    {{/if}}
+    {{if i==1}}
+    <li>
+        <img src="../../img/yinpai.png" alt="">
+        <div class="photo">
+            <img src="{{value.avatar}}" alt="">
+        </div>
+        <span>{{value.fullName}}</span>
+        <span>{{value.sincerity}}</span>
+    </li>
+    {{/if}}
+    {{if i==2}}
+    <li>
+        <img src="../../img/tongpai.png" alt="">
+        <div class="photo">
+            <img src="{{value.avatar}}" alt="">
+        </div>
+        <span>{{value.fullName}}</span>
+        <span>{{value.sincerity}}</span>
+    </li>
+    {{/if}}
+    {{if i>2}}
+    <li>
+        <i>{{i+2}}</i>
+        <div class="photo">
+            <img src="{{value.avatar}}" alt="">
+        </div>
+        <span>{{value.fullName}}</span>
+        <span>{{value.sincerity}}</span>
+    </li>
+    {{/if}}
+    {{/each}}
+</script>
+<script>
+    $(function () {
+        var love=getRequest().love;
+        var sincerity=getRequest().sincerity;
+        $(".a_rank>.love>i").text(love);
+        $(".a_rank>.sincerity>i").text(sincerity);
+        $(".c_list").click(function () {
+            location.href=`./love-score-ranking.html?sincerity=${sincerity}&love=${love}`;
+        })
+        myAjax({url:"/friend/sincerityList",type:"post",data:{rows:10,page:1}}, function (data) {
+            var data=JSON.parse(data);
+            console.log(data);
+            if(data.code==0){
+                $(".first>ul").html(template("ranking",data));
+            }
+        })
+            loadmoreIndex($(".b_list"),"/friend/sincerityList",{rows:10}, function (data) {
+                var data=JSON.parse(data);
+                console.log(data);
+                if(data.code==0){
+                    $(".first>ul").append(template("ranking",data));
+                }
+            });
+
+
+    })
+</script>
 </html>

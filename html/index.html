@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+<script src="../js/jquery.min.js"></script>
+<script src="../js/common/base.js"></script>
+<script src="../js/common/base64.min.js"></script>
+<script>
+    //页面加载 渲染的时候要判断是否存在
+    function isChecked(){
+        //获取cookie
+        var cusername = localStorage.getItem("uName");
+        var cpassword = localStorage.getItem("pwd");
+        cpassword=base64.tranCode.decode(cpassword)
+        if(cusername.length==10){
+            //账号登录
+            myAjax({url:"/user/xysjLogin",data:{xysj:cusername,password:cpassword},type:"post",async:false}, function (data) {
+                console.log(data);
+                location.href='./message/information.html'
+            })
+        }else{
+            //手机号登录
+            myAjax({url:"/user/mobilePhoneLogin",data:{phone:cusername,password:cpassword},type:"post",async:false}, function (data) {
+                console.log(data);
+                location.href='./message/information.html'
+            })
+        }
+    }
+    if(localStorage.getItem("uName") && localStorage.getItem("pwd")){
+        isChecked();
+    }else{
+        location.href='./login.html';
+    }
+</script>
+</html>

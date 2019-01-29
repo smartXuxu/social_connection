@@ -94,7 +94,7 @@
 </header>
 <div style="height: 320px;padding: 20px 0px;padding-left:15%;margin: 10px auto" class="getPic" id="replaceImg">
 <!--头像存放处-->
-    <img id="finalImg" src="../../img/focus-img1.png"  style="border-radius: 50%;">
+    <img id="finalImg" src="../../img/main_logo.png"  style="border-radius: 50%;">
 </div>
 <!--<button  class="l-btn choose_pic">选择图片</button>-->
 <!--图片裁剪框 start-->
@@ -135,11 +135,7 @@
 <script src="../../js/common/head/cropper.min.js"></script>
 <script src="../../js/common/template/template-web.js"></script>
 <script id="getPic" type="text/html">
-    {{if data.avatar==null || !data.avatar}}
-    <img id="finalImg" src="../../img/beat.png"  style="border-radius: 50%;">
-    {{else}}
-    <img id="finalImg" src="{{data.avatar}}" onerror="this.src='../../img/beat.png'" style="border-radius: 50%;">
-    {{/if}}
+    <img id="finalImg" src="{{message.avatar}}" onerror="this.src='../../img/main_logo.png'" style="border-radius: 50%;">
 </script>
 <script type="text/javascript">
 
@@ -269,12 +265,15 @@
     function sendHeadpic(headpicPath){
         $.ajax({
             type: "post",
-            headers:{
+          /*  headers:{
                 'Authorization':localStorage.getItem("cToken")
+            },*/
+            xhrFields: {
+                withCredentials: true
             },
-            url:baseUrl+"/user/uploadAvatar",
+            url:baseUrl+"/base64/upload",
             data:{
-                base64Avatar:headpicPath
+                base64:headpicPath
             },
             dataType: 'json',
             beforeSend: function () {
@@ -283,13 +282,16 @@
             success:function(data){
                 console.log(data);
                 $("#loading").hide();
-                if(data.code==200){
+                if(data.code==0){
+                    localStorage.setItem("avatar",data.message);
                     sweetAlert(
                             "恭喜您",
                             "头像更换成功",
                             "success"
+
                     ).then(function () {
-                             location.href='./mine.html'
+                             back();
+
                             })
                 }else{
                     sweetAlert(
@@ -316,16 +318,16 @@
     //获取个人信息 如头像
     function getHeadpic(){
         $.ajax({
-            type: "get",
+            type: "post",
             async: false,
-            url: baseUrl+`/user/getCurrentUserMessage`,
+            url: baseUrl+`/user/getUser`,
             dataType: 'json',
-            headers:{
-                'Authorization':localStorage.getItem("cToken")
-               },
+                    xhrFields: {
+            withCredentials: true
+             },
             success:function(data){
                 console.log(data);
-                if(data.code==200){
+                if(data.code==0){
                     //console.log(data);
                      var html=template("getPic",data);
                      $(".getPic").html(html);
@@ -337,7 +339,11 @@
             }
         })
     }
-   //getHeadpic();
+
+    if(location.href.split("=")[1]==undefined){
+        getHeadpic();
+    }
+
 </script>
 
 </body>

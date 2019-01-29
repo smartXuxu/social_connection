@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>找回账号</title>
+    <link rel="stylesheet" href="../css/base.css" />
+    <link rel="stylesheet" href="../css/all.css" />
+    <link rel="stylesheet" href="../css/iconfont.css" />
+    <link rel="stylesheet" href="../css/retrieve-password.css" />
+    <link rel="stylesheet" href="../css/common/sweetAlert/sweetalert2.css" />
+</head>
+<body>
+<div>
+    <div class="head">
+        <span onclick="back()">
+        <i class="iconfont icon-right"></i></span>
+        <h1 class="titles">找回账号</h1>
+    </div>
+    <div class="middle-three">
+        <div class="verify">
+            <div class="resetUpwd user_phone">
+                <input type="text" id="full_name" placeholder="请输入您的真实姓名" class="resetUpwd-input" />
+            </div>
+            <div class="resetUpwd user_phone">
+                <input type="text" id="card" placeholder="请输入您的身份证号" class="resetUpwd-input" />
+            </div>
+
+            <div  class="c-4e" >
+                <div class="logon">确定</div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../js/x_rem.js"></script>
+<script src="../js/common/back.js"></script>
+<script src="../js/common/base.js"></script>
+<script src="../js/common/zepto/zepto.min.js"></script>
+<script src="../js/common/sweetAlert/sweetalert2.js"></script>
+<script>
+    $(function () {
+     $(".logon").click(function () {
+         var parms={};
+         var full_name=$("#full_name").val().trim();
+         if(full_name.length==0){
+             sweetAlert(
+                     "sorry",
+                     "请您输入您的真实姓名",
+                     "error"
+             )
+             return false;
+         }
+         parms.fullName=full_name;
+         var idNumber=$("#card").val().trim();
+         var idcardReg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9Xx])$/;
+
+         if(idcardReg.test(idNumber)){
+             parms.idNumber=idNumber;
+         }else{
+             sweetAlert(
+                     "sorry",
+                     "身份证输入不合法",
+                     "error"
+             )
+             return;
+         }
+         myAjax({url:"/user/findxysj",data:parms,type:"post"}, function (data) {
+            var data=JSON.parse(data);
+             console.log(data);
+             if(data.code==0){
+                 sweetAlert(
+                         "请牢记，",
+                         data.message,
+                         "success"
+                 ).then(function () {
+                       location.href='./retrieve-password.html'
+                         })
+             }else{
+                 sweetAlert(
+                         "sorry",
+                         data.message,
+                         "error"
+                 )
+             }
+         })
+     })
+    })
+</script>
+</html>

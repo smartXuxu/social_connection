@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../../css/all.css" />
     <link rel="stylesheet" href="../../css/iconfont.css" />
     <link rel="stylesheet" href="../../css/search.css" />
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css" />
 </head>
 <body>
 <div>
@@ -22,13 +23,38 @@
             <span class="sousuo-one">搜索</span>
     </div>
     <div class="middle-two">
-        <div onclick="location.href='./add-friends.html'" class="account">
+       <!-- <div onclick="location.href='./add-friends.html'" class="account">
             <span>145623314</span><span>该账号正在使用中</span>
-        </div>
+        </div>-->
     </div>
 </div>
 </body>
 <script src="../../js/x_rem.js"></script>
 <script src="../../js/common/back.js"></script>
 <script src="../../js/common/base.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script>
+    $(function () {
+        $(".sousuo-one").click(function () {
+            var userName=$("input").val().trim();
+            myAjax({url:"/im/selectUserOne",type:"post",data:{username:userName}}, function (data) {
+
+                var data=JSON.parse(data);
+                console.log(data);
+                if(data.code==200){
+                    $(".middle-two").html(`
+                <div onclick="location.href='./add-friends.html?accoundId=${userName}'" class="account">
+                            <span>${userName}</span><span>该账号正在使用中</span>
+                    </div>`);
+                }else if(data.code==414){
+                    $(".middle-two").html(`
+                <div  class="account">
+                            <span>${userName}</span><span>该账号尚未注册</span>
+                    </div>`);
+                }
+            })
+        })
+    })
+</script>
 </html>

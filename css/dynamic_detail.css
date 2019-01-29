@@ -81,6 +81,9 @@
   margin-right:.3rem;
   color:#666;
 }
+.z_discuss.active >.icon-zan{
+  color:#f01414;
+}
 .icon-evaluate{
   font-size:.32rem;
 }
@@ -102,37 +105,37 @@
 .layer .main > .dy_comment > .comment_father {
   margin-top: 0.2rem;
 }
-.layer .main > .dy_comment > .comment_father > .comment_father_top {
+.layer .main > .dy_comment > .comment_father  .comment_father_top {
   position: relative;
 }
-.layer .main > .dy_comment > .comment_father > .comment_father_top > img {
+.layer .main > .dy_comment > .comment_father  .comment_father_top > img {
   width: 0.6rem;
   height: 0.6rem;
   -webkit-border-radius: 50%;
   -moz-border-radius: 50%;
   border-radius: 50%;
 }
-.layer .main > .dy_comment > .comment_father > .comment_father_top > .comment_father_center {
+.layer .main > .dy_comment > .comment_father  .comment_father_top > .comment_father_center {
   position: absolute;
   left: 0.8rem;
   top: 2%;
 }
-.layer .main > .dy_comment > .comment_father > .comment_father_top > .comment_father_center > span {
+.layer .main > .dy_comment > .comment_father  .comment_father_top > .comment_father_center > span {
   display: block;
   font-size: 0.28rem;
 }
-.layer .main > .dy_comment > .comment_father > .comment_father_top > .comment_father_center > em {
+.layer .main > .dy_comment > .comment_father  .comment_father_top > .comment_father_center > em {
   font-size: 0.24rem;
   color: #999;
 }
-.layer .main > .dy_comment > .comment_father > .comment_text {
+.layer .main > .dy_comment > .comment_father  .comment_text {
   margin-left: 0.6rem;
   font-size: 0.3rem;
   color: #323333;
   margin-top: 0.1rem;
   margin-bottom: 0.1rem;
 }
-.layer .main > .dy_comment > .comment_father > .comment_sons {
+.layer .main > .dy_comment > .comment_father  >.comment_sons {
   margin-left: 0.6rem;
   background-color: #eeeeee;
   padding: 0.2rem;
@@ -155,6 +158,7 @@
 .layer > .footer > input {
   margin-left: 0.3rem;
   width: 80%;
+  font-size: .28rem;
   height: 0.7rem;
   line-height: 0.7rem;
   text-indent: 1em;

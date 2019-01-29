@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>设置</title>
     <link rel="stylesheet" href="../../css/base.css" />
     <link rel="stylesheet" href="../../css/iconfont.css" />
     <link rel="stylesheet" href="../../css/all.css" />
     <link rel="stylesheet" href="../../css/set.css" />
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css" />
 </head>
 <body>
 <div>
@@ -32,7 +32,7 @@
                     <span>关于我们</span>
                     <i class="iconfont icon-icon1"></i>
                 </li>
-                <li onclick="location.href='../login.html'" class="b_safety">
+                <li  class="b_safety">
                     <span>退出当前账号</span>
                 </li>
             </ul>
@@ -42,6 +42,29 @@
 <script src="../../js/x_rem.js"></script>
 <script src="../../js/common/back.js"></script>
 <script src="../../js/common/base.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script>
+    $(function () {
+        $(".b_safety").click(function () {
+            //点击退出登录
+            myAjax({url:"/user/outLogin",type:"post"}, function (data) {
 
+                //成功
+                var data=JSON.parse(data);
+                console.log(data);
+                if(data.code==0){
+                   location.href='../login.html'
+                }else{
+                    sweetAlert(
+                            "sorry",
+                            data.message,
+                            "error"
+                    )
+                }
+            })
+        })
+    })
+</script>
 </body>
 </html>

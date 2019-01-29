@@ -1,6 +1,13 @@
 body,html{
     background-color:#f4f4f4;
 }
+.middle{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    overflow-y: auto;
+}
 .detail{
     margin:0 auto;
     width:80%;

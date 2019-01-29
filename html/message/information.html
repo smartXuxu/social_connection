@@ -13,13 +13,17 @@
     <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css" />
 </head>
 <body>
+<div id="loading">
+    <img src="../../img/login.gif" alt=""/>
+    <div>请等待，正在加载...</div>
+</div>
 <div class="layer">
     <div class="head">
         <h1 class="titles">消息</h1>
         <a href="../address_list/search-friends.html"><i class="iconfont icon-sousuo1"></i></a>
     </div>
     <div class="middles">
-        <div  onclick="location.href=''" class="news">
+        <!--<div  onclick="location.href='./chat.html'" class="news">
          <div class="row">
              <div class="portrait">
                  <img src="../../img/11.png" alt="">
@@ -63,20 +67,28 @@
                     <span>99+</span>
                 </div>
             </div>
-        </div>
+        </div>-->
 
     </div>
     <footer id="footer"></footer>
 </div>
 </body>
 <script src="../../js/x_rem.js"></script>
-<script src="../../js/jquery.min.js"></script>
-<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/jquery.min.js"></script>
 <script src="../../js/common/mui/mui.min.js"></script>
+<script src="../../js/common/base64.min.js"></script>
+<script src="../../js/common/base.js"></script>
 <script src="../../js/common/sweetAlert/sweetalert2.js"></script>
 <script>
     $(function () {
         $('#footer').load('../common/footer.html');
+        setTimeout(function () {
+            $(".footer .first a i:nth-of-type(1)").addClass("icon-xiaoxi2").removeClass("icon-xiaoxi")
+        },100)
+        //ajax 发送完毕
+        $(document).ajaxStop(function(){
+            $("#loading").hide();
+        });
         (function($, doc) {
             $.init();
             $.plusReady(function() {
@@ -95,7 +107,128 @@
                 };
             });
         }(mui, document));
+        //先获取好友列表 在获取历史消息
+        var arr=[],messageId=[];
 
+        //查询好友列表
+        list();
+        function list(){
+            myAjax({url:"/im/friendsList",type:"post",async:false}, function (data) {
+               // var data=JSON.parse(data);
+                console.log(data);
+                if(data.message=="好友列表为空！"){
+                    $('.middles').html(`<div class='no_in'>对不起，您暂时没有任何好友，快去添加吧</div>`)
+                    return ;
+                }else if(data.code==0){
+                    for(var i=0;i<data.message.uinfos.length;i++){
+                    //查询标记
+                        myAjax({url:"/imRecord/getImRecord",data:{in:`${data.message.uinfos[i].accid}`},async:false,type:"post"}, function (data) {
+                  console.log(data);
+                    if(data.code==0){
+                        messageId.push(data.message);
+                        console.log(messageId);
+                    }
+                    else if(data.code!==7&&data.code!==0){
+                        sweetAlert(
+                                "sorry",
+                                data.message,
+                                "error"
+                        )
+                    }
+                })
+                        arr.push([data.message.uinfos[i].accid,data.message.uinfos[i].name,data.message.uinfos[i].icon]);
+
+                    }
+                 /*   console.log(arr);
+                 console.log(messageId);*/
+                    getMessage();
+                }else{
+            sweetAlert(
+                    "sorry",
+                    data.message,
+                    "error"
+            )
+        }
+            })
+
+        }
+        //获取历史消息
+        function to_time(time){
+            var timestamp=new Date().getTime();//当前时间戳
+            var kk=timestamp-time;//发表时的时间戳
+            var timea="";
+            var sec=parseInt(kk/1000);//秒
+            var min=parseInt(sec/60);//分
+            var hour=parseInt(min/60);//时
+            var day=parseInt(hour/24);//天
+            if(sec<60){
+                timea=sec+"秒前";
+            }else if(min<60){
+                timea=min+"分钟前";
+            }else if(hour<24){
+                timea=hour+"小时前";
+            }else if(day<7){
+                timea=day+"天前";
+            }else{
+                timea=new Date(time).toLocaleString().replace(/:\d{1,2}$/,' ').substr(5,11).replace(/\//g,"-");
+            }
+            return timea;
+        }
+        function getMessage(){
+            var html = "",lengthId=0;
+            for(let j=0;j<arr.length;j++){
+                myAjax({url:"/im/querySessionMsg",type:"post",data:{to:arr[j][0]},async:false}, function (data) {
+                   // var data=JSON.parse(data);
+                    console.log(data);
+                    if(data.code==200){
+                        //console.log(arr[j][2]);
+                       /* console.log(messageId[0]);*/
+                        data.msgs=data.msgs.reverse();
+                        var newLength=data.msgs.length-1
+                        for(let k=0;k<data.msgs.length;k++) {
+                            //console.log(data.msgs[k].msgid);
+                           // console.log(messageId[j]);
+                            if (data.msgs[k].msgid == messageId[j]) {
+                                //证明找到了未读区域
+                               // console.log(k);
+                                lengthId =  newLength -k;
+                                console.log(lengthId);
+                            }
+                        }
+                        if(lengthId==0){
+                            var spans=''
+                        }else{
+                            var spans=`<span>${lengthId}</span>`
+                        }
+            if(data.msgs.length!==0){
+                html+=`<div onclick="location.href='./chat.html?accid=${arr[j][0]}'" class="news">
+                        <div class="row">
+                        <div class="portrait">
+                        <img src="${arr[j][2]}" alt="">
+                        </div>
+                        <div class="screen">
+                        <p>${arr[j][1]}</p>
+                        <p>${data.msgs[newLength].body.msg}</p>
+                        </div>
+                        <div class="time">
+                        <p>${to_time(data.msgs[newLength].sendtime)}</p>
+                            ${spans}
+                        </div>
+                        </div>
+                        </div>`
+                    $(".middles").html(html);
+            }
+
+                    }else{
+                        sweetAlert(
+                                "sorry",
+                                data.message,
+                                "error"
+                        )
+                    }
+                })
+            }
+        }
     })
 </script>
 </html>

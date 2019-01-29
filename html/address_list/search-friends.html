@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="../../css/all.css" />
     <link rel="stylesheet" href="../../css/iconfont.css" />
     <link rel="stylesheet" href="../../css/search.css" />
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css" />
 </head>
 <body>
 <div>
@@ -17,22 +18,73 @@
         <i class="iconfont icon-right"></i></span>
         <div class="sousuo">
             <i class="iconfont icon-sousuo"></i>
-            <input type="text" placeholder="搜索好友" class="resetUpwd-input" />
+            <input type="number" placeholder="请根据账号搜索好友" class="resetUpwd-input" />
         </div>
         <span class="sousuo-one">搜索</span>
     </div>
     <div class="middle-two">
-        <div onclick="location.href='./'" class="account row">
+        <!--<div onclick="location.href='./'" class="account row">
             <div class="b_picture">
                 <img src="../../img/11.png" alt="">
             </div>
             <div class="c_picture">
                 <span>李小沫</span>
             </div>
-        </div>
+        </div>-->
     </div>
 </div>
 <script src="../../js/x_rem.js"></script>
+<script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script src="../../js/common/back.js"></script>
+<script src="../../js/common/base.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script type="text/html" id="list">
+    {{if uinfos.length==0}}
+    <div class="no_in">对不起，没有符合条件的好友</div>
+    {{else}}
+    {{each uinfos as value i}}
+    <div onclick="location.href='./mine_index.html?accid={{value.accid}}'" class="account row">
+        <div class="b_picture">
+            <img src="../../img/11.png" alt="">
+        </div>
+        <div class="c_picture">
+            <span>李小沫</span>
+        </div>
+    </div>
+    {{/each}}
+    {{/if}}
+</script>
+<script>
+    $(function () {
+        //搜索好友
+        $(".sousuo-one").click(function () {
+            var userName=$("input").val().trim();
+             if(userName.length==0){
+                 sweetAlert(
+                         "sorry",
+                         "请您填写要搜索的好友",
+                         "error"
+                 )
+             return;
+             }
+
+            myAjax({url:"/im/selectUserOne",type:"post",data:{username:userName}}, function (data) {
+                var data=JSON.parse(data);
+                console.log(data);
+                if(data.code==200){
+                    $(".middle-two").html(template("list",data));
+                }else if(data.code==414){
+                    $(".middle-two").html(`
+                <div  class="no_in">
+                            对不起，没有此好友
+                    </div>`);
+                }
+            })
+        })
+
+    })
+</script>
 
 </body>
 </html>

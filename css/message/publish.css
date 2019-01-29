@@ -1,0 +1,30 @@
+.middle-three > .p_picture > .picture {
+  width: 100%;
+  position: relative;
+}
+.middle-three > .p_picture > .picture img {
+  width: 30%;
+  height: 2rem;
+  vertical-align: top;
+}
+.middle-three > .p_picture > .picture .pic_box {
+  position: relative;
+  width: 30%;
+  height: 2rem;
+}
+.middle-three > .p_picture > .picture .pic_box > input {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 6;
+  opacity: 0;
+}
+.middle-three > .p_picture > .picture .pic_box > span {
+  width: 100%;
+  height: 100%;
+  background: url("../../img/tianjia.png") no-repeat center;
+  -webkit-background-size: 100%;
+  background-size: 100%;
+}

@@ -5,82 +5,244 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>亲友圈</title>
-    <link rel="stylesheet" href="../../css/base.css" />
     <link rel="stylesheet" href="../../css/common/mui/mui.min.css" />
+    <link rel="stylesheet" href="../../css/base.css"/>
     <link rel="stylesheet" href="../../css/common/mui/mui_img.css" />
+    <link rel="stylesheet" href="../../css/common/sweetAlert/sweetalert2.css" />
     <link rel="stylesheet" href="../../css/all.css" />
     <link rel="stylesheet" href="../../css/iconfont.css" />
     <link rel="stylesheet" href="../../css/friends-circle.css" />
     <link rel="stylesheet" href="../../css/footer.css" />
 </head>
 <body>
+<div id="loading">
+    <img src="../../img/login.gif" alt=""/>
+    <div>请等待，正在加载...</div>
+</div>
 <div>
     <div class="head">
         <h1 class="titles">亲友圈</h1>
         <a href="./announce.html"><i class="iconfont icon-noticeplus"></i></a>
     </div>
     <div class="middles">
-    <div class="dynamic">
-        <div onclick="location.href='../address_list/mine_index.html'" class="h_photo row">
-            <div class="photo">
-                <img src="../../img/22.png" alt="">
-            </div>
-            <div class="screen">
-                <p>陌上浅笑</p>
-                <p>3分钟前</p>
-            </div>
-        </div>
-        <div onclick="location.href='dynamic_detail.html'" class="content">
-            <p>今天做的甜点，感觉味道还不错，欢迎大家来品尝！</p>
-        </div>
-        <div class="state">
-            <div>
-                <img src="../../img/44.png" data-preview-src="" data-preview-group="1" alt="">
-            </div>
-            <div>
-                <img src="../../img/55.png" data-preview-src="" data-preview-group="1" alt="">
-            </div>
-            <div>
-                <img src="../../img/66.png" data-preview-src="" data-preview-group="1" alt="">
-            </div>
-            <div>
-                <img src="../../img/77.png"data-preview-src="" data-preview-group="1" alt="">
-            </div>
-            <div>
-                <img src="../../img/44.png" alt="">
-            </div>
-            <div>
-                <img src="../../img/55.png" alt="">
-            </div>
-        </div>
-        <div class="discuss">
-            <div onclick="location.href='dynamic_detail.html'" class="p_discuss">
-                <i class="iconfont icon-evaluate"></i>
-                <span>9</span>
-            </div>
-            <div class="z_discuss">
-                <i class="iconfont icon-zan"></i>
-                <span>99</span>
-            </div>
-        </div>
+        <!-- <div class="dynamic">
+         <div onclick="location.href='../address_list/mine_index.html'" class="h_photo row">
+             <div class="photo">
+                 <img src="../../img/22.png" alt="">
+             </div>
+             <div class="screen">
+                 <p>陌上浅笑</p>
+                 <p>3分钟前</p>
+             </div>
+         </div>
+         <div onclick="location.href='dynamic_detail.html'" class="content">
+             <p>今天做的甜点，感觉味道还不错，欢迎大家来品尝！</p>
+         </div>
+         <div class="state">
+             <div>
+                 <img src="../../img/44.png" data-preview-src="" data-preview-group="1" alt="">
+             </div>
+             <div>
+                 <img src="../../img/55.png" data-preview-src="" data-preview-group="1" alt="">
+             </div>
+             <div>
+                 <img src="../../img/66.png" data-preview-src="" data-preview-group="1" alt="">
+             </div>
+             <div>
+                 <img src="../../img/77.png"data-preview-src="" data-preview-group="1" alt="">
+             </div>
+             <div>
+                 <img src="../../img/44.png" alt="">
+             </div>
+             <div>
+                 <img src="../../img/55.png" alt="">
+             </div>
+         </div>
+         <div class="discuss">
+             <div onclick="location.href='dynamic_detail.html'" class="p_discuss">
+                 <i class="iconfont icon-evaluate"></i>
+                 <span>9</span>
+             </div>
+             <div class="z_discuss">
+                 <i class="iconfont icon-zan active"></i>
+                 <span>99</span>
+             </div>
+         </div>
+     </div>-->
     </div>
-</div>
     <footer id="footer"></footer>
 </div>
 </body>
 <script src="../../js/common/x_rem.js"></script>
+<script src="../../js/common/base.js"></script>
+<!--<script src="../../js/common/jquery.min.js"></script>-->
 <script src="../../js/common/zepto/zepto.min.js"></script>
+<script src="../../js/common/zepto/outHeight.js"></script>
+<script src="../../js/common/zepto/touch.js"></script>
+<script src="../../js/common/zepto/selector.js"></script>
 <script src="../../js/common/mui/mui.min.js"></script>
 <script src="../../js/common/mui/mui.zoom.js"></script>
 <script src="../../js/common/mui/mui.preview.js"></script>
+<script src="../../js/common/template/template.js"></script>
+<script src="../../js/common/sweetAlert/sweetalert2.js"></script>
+<script type="text/html" id="dynamic">
+    {{if message==null||message.length==0 }}
+    <div class="no_in">对不起，您的亲友圈中暂时没有动态</div>
+    {{else}}
+    {{each message as value i}}
+    <div class="dynamic">
+        <div onclick="location.href='../address_list/mine_index.html?accid={{value.dynamic.xysj}}'" class="h_photo row">
+            <div class="photo">
+                <img src="{{value.dynamic.userAvatar}}" onerror="this.src='../../img/main_logo.png'" alt="">
+            </div>
+            <div class="screen">
+                <p>{{value.dynamic.userName}}</p>
+                <p>{{time(value.dynamic.createTime)}}</p>
+            </div>
+        </div>
+        <div onclick="location.href='dynamic_detail.html?dynamicId={{value.dynamic.dynamicId}}'" class="content">
+            <p>{{value.dynamic.dynamicBody}}</p>
+        </div>
+        {{if value.dynamic.image.length!==0}}
+        <div class="state">
+            {{each spl(value.dynamic.image) as img j}}
+            <div>
+                <img src="{{img}}" onerror="this.src='../../img/main_logo.png'" data-preview-src="" data-preview-group="{{i}}" alt="">
+            </div>
+           {{/each}}
+        </div>
+        {{/if}}
+        <div class="discuss">
+            <div onclick="location.href='./dynamic_detail.html?dynamicId={{value.dynamic.dynamicId}}'" class="p_discuss">
+                <i class="iconfont icon-evaluate"></i>
+                <span>{{value.dynamicComment}}</span>
+            </div>
+            <div class="z_discuss {{value.isUp==true?'active':''}}" data-dyid="{{value.dynamic.dynamicId}}">
+                <i class="iconfont icon-zan "></i>
+                <span>{{value.dynamicThumbsUp}}</span>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+    {{/if}}
+</script>
 <script>
     $(function () {
+        /*双击退出APP*/
+        (function($, doc) {
+            $.init();
+            $.plusReady(function() {
+                var backButtonPress = 0;
+                $.back = function(event) {
+                    backButtonPress++;
+                    if (backButtonPress > 1) {
+                        plus.runtime.quit();
+                    } else {
+                        plus.nativeUI.toast('再按一次退出应用');
+                    }
+                    setTimeout(function() {
+                        backButtonPress = 0;
+                    }, 1000);
+                    return false;
+                };
+            });
+        }(mui, document));
         $('#footer').load('../common/footer.html');
         setTimeout(function () {
             $("#footer li:nth-of-type(3)").addClass("active").siblings().removeClass("active");
+            $("#footer li:nth-of-type(3) a i:nth-of-type(1)").addClass("icon-dongtai1").removeClass("icon-dongtai");
         },300)
         mui.previewImage();
         mui('body').on('tap','a',function(){document.location.href=this.href;});
+
+        //ajax 发送完毕
+        $(document).on('ajaxStop', function () {
+            $("#loading").hide();
+        })
+        //朋友圈动态
+        myAjax({url:"/dynamic/searchDynamic",type:"post",data:{page:1,rows:5}}, function (data) {
+           var data=JSON.parse(data);
+            console.log(data)
+            if(data.code==0){
+
+                template.helper("spl",function(str){
+                    return str.split(",")
+                });
+                template.helper("time",function(time){
+                    var timestamp=new Date().getTime();//当前时间戳
+                    var time=new Date(time).getTime();//当前时间戳
+                    var kk=timestamp-time;//发表时的时间戳
+                    var timea="";
+                    var sec=parseInt(kk/1000);//秒
+                    var min=parseInt(sec/60);//分
+                    var hour=parseInt(min/60);//时
+                    var day=parseInt(hour/24);//天
+                    if(sec<60){
+                        timea=sec+"秒前";
+                    }else if(min<60){
+                        timea=min+"分钟前";
+                    }else if(hour<24){
+                        timea=hour+"小时前";
+                    }else if(day<7){
+                        timea=day+"天前";
+                    }else{
+                        timea=new Date(time).toLocaleString().replace(/:\d{1,2}$/,' ').substr(5,12).replace(/\//g,"-");
+                    }
+                    return timea;
+                });
+
+                $(".middles").html(template("dynamic",data));
+            }else{
+                sweetAlert(
+                        "sorry",
+                        data.message,
+                        "error"
+                ).then(function () {
+                            location.href='../login.html'
+                        })
+            }
+        })
+        loadmore($(".middles"),"/dynamic/searchDynamic", function (data) {
+            console.log(data);
+            if(data.code==0){
+                $(".middles").append(template("dynamic",data));
+            }else{
+                sweetAlert(
+                        "sorry",
+                        data.message,
+                        "error"
+                )
+            }
+        })
+            //点赞 或取消点赞
+        function isHand(id,e){
+            myAjax({url:"/dynamic/addDynamicThumbsUp",data:{dynamicId:id},type:"POST"}, function (data) {
+                var data=JSON.parse(data);
+                console.log(data);
+                if(data.code==0&&data.message=='点赞成功'){
+                    $(e).addClass("active");
+                    var hand_number=$(e).children("span").text();
+
+                    $(e).children("span").text(parseInt(hand_number)+1);
+                }else if(data.code==0&&data.message=='取消点赞成功'){
+                    $(e).removeClass("active");
+                    var hand_number=$(e).children("span").text();
+
+                    $(e).children("span").text(hand_number-1);
+
+                }
+            })
+        }
+        $(".middles").on("click",".z_discuss", function () {
+            var id=$(this).data("dyid");
+            //console.log(id);
+            isHand(id,this);
+
+        })
+       /* $(".middles").swipeUp(function () {
+            console.log(2);
+            mui.toast("下拉");
+        })*/
     })
 </script>
 </html>
